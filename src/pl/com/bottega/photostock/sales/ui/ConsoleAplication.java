@@ -37,6 +37,7 @@ public class ConsoleAplication {
         //%d oznacza liczbę dziesiętną może być np %s jak string
 
         Offer offer = reservation.generateOffer();
+
         Money cost = offer.getTotalCost();
         if (client.canAfford(cost)){
             Purchase purchase = new Purchase(client, offer.getItems());
