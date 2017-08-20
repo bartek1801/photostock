@@ -3,7 +3,7 @@ package pl.com.bottega.photostock.sales.model;
 /**
  * Created by bartek on 19.08.2017.
  */
-public class Money {
+public class Money implements Comparable<Money> {
 
     public static final String DEFAULT_CURRENCY = "CREDIT";
     public static final Money ZERO = new Money();
@@ -11,7 +11,7 @@ public class Money {
     private Long cents;
     private String currency;
 
-    private Money() { // prywatny konstruktor, nie można wywołac go z zewnątrz
+    private Money() { // prywatny konstruktor, nie można wywołac go z zewnątrz, na potrzeby Money.ZERO
         this.cents = 0L;
         this.currency = DEFAULT_CURRENCY;
     }
@@ -36,7 +36,7 @@ public class Money {
         return new Money(cents + other.cents, currency);
     }
 
-    public Money substract(Money other) {
+    public Money sub(Money other) {
         return add(other.neg());
     }
 
@@ -49,7 +49,7 @@ public class Money {
             throw new IllegalArgumentException("Incopatible currencies");
     }
 
-    public boolean gte(Money other){
+    public boolean gtev1(Money other){
         checkCurrency(other);
         return cents >= other.cents;
     }
@@ -80,5 +80,23 @@ public class Money {
     }
 
 
+    @Override
+    public int compareTo(Money other) {
+        checkCurrency(other);
+        return (int) (cents - other.cents);
+    }
 
+    public boolean lt(Money other) {
+        return compareTo(other) < 0;
+    }
+
+    public boolean lte(Money other) {
+        return compareTo(other) <= 0;
+    }
+    public boolean gt(Money other) {
+        return compareTo(other) > 0;
+    }
+    public boolean gte(Money other) {
+        return compareTo(other) >= 0;
+    }
 }

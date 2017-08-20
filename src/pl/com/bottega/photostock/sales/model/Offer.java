@@ -12,8 +12,10 @@ import java.util.LinkedList;
 public class Offer {
 
     private Collection<Picture> items;
+    private Client owner;
 
-    public Offer(Collection<Picture> items){
+    public Offer(Client owner, Collection<Picture> items){
+        this.owner = owner;
         this.items = new LinkedList<>(items);
     }
 
@@ -23,12 +25,15 @@ public class Offer {
     }
 
     public int getItemsCount(){
-
-        return -1;
+        return items.size();
     }
 
     public Money getTotalCost(){
-        return null;
+        Money totalCost = Money.ZERO;
+        for (Picture item : items){
+            totalCost = totalCost.add(item.calculatePrice(owner)); //metoda add() tworzu nowy obiekt typu Money
+        }
+        return totalCost;
     }
 
     public Collection<Picture> getItems() {

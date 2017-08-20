@@ -13,6 +13,8 @@ public class Picture {
     private Set<String> tags;
     private Money price;
     private Boolean active;
+    private Client reservedBy;
+    private Client owner;
 
     public Picture(Long number, Set<String> tags, Money price){
         this(number, tags, price, true);   //wywołanie konstruktora w konstruktorze, nie można nic wywołac przed tym
@@ -26,27 +28,34 @@ public class Picture {
     }
 
     public Money calculatePrice(Client client){
-
-        return null;
+        return price;
     }
 
     public boolean isAvailable(){
-
-        return true;
+        return active && reservedBy == null;
     }
 
     public void reservedPer(Client client){
-
+        if (!isAvailable())
+            throw new IllegalStateException("Product is not available");
+        reservedBy = client;
     }
 
     public void unreservedPer(Client client){
-
-
+        if (owner != null)
+            throw new IllegalStateException("Product is alredy purchased");
+        checkReservation(client);
+        reservedBy = null;
     }
 
     public void soldPer(Client client){
+        checkReservation(client);
+        owner = client;
+    }
 
-
+    private void checkReservation(Client client) {
+        if (reservedBy == null || !reservedBy.equals(client))
+            throw new IllegalStateException(String.format("Product is not reserved by %s", client));
     }
 
     @Override
@@ -62,5 +71,9 @@ public class Picture {
     @Override
     public int hashCode() {
         return number.hashCode();
+    }
+
+    public Long getNumber() {
+        return number;
     }
 }

@@ -3,6 +3,7 @@ package pl.com.bottega.photostock.sales.model;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -52,7 +53,7 @@ public class MoneyTest {
     public void shoulSubstractMoney(){
 
         //when
-        Money m1MinusM2 = fiftyCredit.substract(seventyCredit);
+        Money m1MinusM2 = fiftyCredit.sub(seventyCredit);
 
         //then
         Money expected = Money.valueOf(-20);
@@ -73,9 +74,39 @@ public class MoneyTest {
     @Test
     public void sholdSayIfGreaterThanorEquals(){
 
-        assertTrue(seventyCredit.gte(fiftyCredit));
-        assertTrue(seventyEuro.gte(fiftyEuro));
+        assertTrue(seventyCredit.gtev1(fiftyCredit));
+        assertTrue(seventyEuro.gtev1(fiftyEuro));
 
+    }
+
+    @Test
+    public void shouldCompareMoney(){
+
+        assertTrue(fiftyCredit.compareTo(seventyCredit) < 0);
+        assertTrue(seventyCredit.compareTo(fiftyCredit) > 0);
+        assertTrue(fiftyCredit.compareTo(fiftyCredit) == 0);
+    }
+
+    @Test
+    public void shouldCompareMoneyUsingBooleanMethods(){
+
+        assertTrue(fiftyCredit.lt(seventyCredit));
+        assertTrue(fiftyCredit.lte(seventyCredit));
+        assertTrue(seventyCredit.gt(fiftyCredit));
+        assertTrue(seventyCredit.gte(fiftyCredit));
+        assertFalse(fiftyCredit.gt(seventyCredit));
+        assertFalse(seventyCredit.lte(fiftyCredit));
+        assertFalse(seventyCredit.lt(seventyCredit));
+        assertFalse(fiftyCredit.gt(fiftyCredit));
+        assertTrue(fiftyCredit.gte(fiftyCredit));
+        assertTrue(fiftyCredit.lte(fiftyCredit));
+
+        //dopisz resztę przypadków
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldNotCompareDifferentCurrencies(){
+        fiftyCredit.compareTo(fiftyEuro);
     }
 
 
