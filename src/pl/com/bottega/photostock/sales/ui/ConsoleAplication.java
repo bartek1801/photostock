@@ -5,6 +5,7 @@ import pl.com.bottega.photostock.sales.model.*;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Created by bartek on 06.08.2017.
@@ -14,14 +15,16 @@ public class ConsoleAplication {
 
     public static void main(String[] args) {
         PictureRepository repository = new InMemoryPictureRepository();
-        
+
         Picture p1 = repository.get(1L);//pobieramy produkty z repozytorium
         Picture p2 = repository.get(2L);
         Picture p3 = repository.get(3L);
 
         Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
+        Client clientPlatinium = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
+                ClientStatus.PLATINUM, Money.valueOf(100), Money.valueOf(200));
         client.recharge(Money.valueOf(1000000));
-        Reservation reservation = new Reservation(client);
+        Reservation reservation = new Reservation(clientPlatinium);
         LightBox l = new LightBox(client, "koty");
         l.add(p1);
         l.add(p2);

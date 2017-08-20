@@ -1,6 +1,5 @@
 package pl.com.bottega.photostock.sales.model;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,8 +27,19 @@ public class Picture {
     }
 
     public Money calculatePrice(Client client){
-        return price;
+        return price.percent(100 - client.discountPercent());
     }
+    //zamiast tego
+    /*switch (client.getStatus()) {
+            case SILVER:
+                return price.percent(95);
+            case GOLD:
+                return price.percent(90);
+            case PLATINUM:
+                return price.percent(85);
+            }
+        return price;
+        */
 
     public boolean isAvailable(){
         return active && reservedBy == null;

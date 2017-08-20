@@ -71,13 +71,6 @@ public class MoneyTest {
 
     }
 
-    @Test
-    public void sholdSayIfGreaterThanorEquals(){
-
-        assertTrue(seventyCredit.gtev1(fiftyCredit));
-        assertTrue(seventyEuro.gtev1(fiftyEuro));
-
-    }
 
     @Test
     public void shouldCompareMoney(){
@@ -109,5 +102,13 @@ public class MoneyTest {
         fiftyCredit.compareTo(fiftyEuro);
     }
 
+    @Test
+    public void shouldCalculatePercent(){
+        assertEquals(Money.valueOf(5), fiftyCredit.percent(10));
+        assertEquals(Money.valueOf(5.50), fiftyCredit.percent(11));
+        assertEquals(Money.valueOf(75), fiftyCredit.percent(150));
+        assertEquals(Money.valueOf(0.01), Money.valueOf(0.11).percent(10));
+        assertEquals(Money.valueOf(0.01), Money.valueOf(0.19).percent(10));
+    }
 
 }
