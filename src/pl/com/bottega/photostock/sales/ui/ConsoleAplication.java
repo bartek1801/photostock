@@ -38,6 +38,10 @@ public class ConsoleAplication {
 
         Offer offer = reservation.generateOffer();
 
+      /*  for (Picture item : offer.getItems()){
+            System.out.println(String.format("%d. | %s", item.getNumber(), item.calculatePrice(client)));
+        }*/
+
         Money cost = offer.getTotalCost();
         if (client.canAfford(cost)){
             Purchase purchase = new Purchase(client, offer.getItems());
