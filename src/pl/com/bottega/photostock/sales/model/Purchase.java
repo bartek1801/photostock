@@ -2,7 +2,6 @@ package pl.com.bottega.photostock.sales.model;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -10,11 +9,11 @@ import java.util.LinkedList;
  */
 public class Purchase {
 
-    private Collection<Picture> items;
+    private Collection<Product> items;
     private Client buyer;
     private LocalDateTime purchaseDate = LocalDateTime.now();
 
-    public Purchase(Client buyer, Collection<Picture> items){
+    public Purchase(Client buyer, Collection<Product> items){
         this.buyer = buyer;
         this.items = new LinkedList<>(items);
     }

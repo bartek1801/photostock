@@ -8,11 +8,11 @@ import java.util.Optional;
 public interface PictureRepository {
 
     //pobiera obiekt o identyfikatorze
-    Picture get(Long number);
+    Product get(Long number);
 
     //zapis nowego lub aktualizacja istiejącego
-    void save(Picture picture);
+    void save(Product product);
 
-    Optional<Picture> getOptional(Long number); //TODO poczytaj o optional
+    Optional<Product> getOptional(Long number); //TODO poczytaj o optional
 
 }

@@ -1,11 +1,18 @@
 package pl.com.bottega.photostock.sales.model;
 
 /**
- * Created by bartek on 20.08.2017.
+ * Created by bartek on 21.08.2017.
  */
 public interface Product {
+    Money calculatePrice(Client client);
 
-    //TODO
-    //Extract to interface lub to Superclass
-    //stwórz hierarchię
+    boolean isAvailable();
+
+    void reservedPer(Client client);
+
+    void unreservedPer(Client client);
+
+    void soldPer(Client client);
+
+    Long getNumber();
 }

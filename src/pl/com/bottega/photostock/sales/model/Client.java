@@ -28,12 +28,12 @@ public class Client {
             transactions.add(new Transaction(balance, "First charge"));
     }
 
-    public ClientStatus getStatus() {
-        return status;
-    }
-
     public Client(String name, Address address) {
         this(name, address, ClientStatus.STANDARD, Money.ZERO, Money.ZERO);
+    }
+
+    public ClientStatus getStatus() {
+        return status;
     }
 
 
