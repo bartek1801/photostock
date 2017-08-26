@@ -1,5 +1,7 @@
 package pl.com.bottega.photostock.sales.model;
 
+import sun.plugin2.main.client.MessagePassingOneWayJSObject;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,23 +13,23 @@ public class Client {
     private String name;
     private Address address;
     private ClientStatus status;
-    private Money balance;
+    //private Money balance;
     private Money creditLimit;
     private List<Transaction> transactions = new LinkedList<>();
 
 
-    public Client(String name, Address address, ClientStatus status, Money balance, Money creditLimit) {
+    public Client(String name, Address address, ClientStatus status, Money creditLimit) { //, Money balance
         this.name = name;
         this.address = address;
         this.status = status;
-        this.balance = balance;
+        //this.balance = balance;
         this.creditLimit = creditLimit;
-        if (balance.gt(Money.ZERO))
-            transactions.add(new Transaction(balance, "First charge"));
+//        if (balance.gt(Money.ZERO))
+//            transactions.add(new Transaction(balance, "First charge"));
     }
 
     public Client(String name, Address address) {
-        this(name, address, ClientStatus.STANDARD, Money.ZERO, Money.ZERO);
+        this(name, address, ClientStatus.STANDARD, Money.ZERO); //, Money.ZERO
     }
 
     public ClientStatus getStatus() {
@@ -36,26 +38,26 @@ public class Client {
 
 
     public boolean canAfford(Money amount) {
-        return balance.add(creditLimit).gte(amount);
-        //return balance(creditLimit).gte(amount);
+        return balance().add(creditLimit).gte(amount);
     }
 
-    private Money balance(Money amount){ //TODO
+    Money balance(){
         Money balance = Money.ZERO;
-        return balance.add(amount);
+        for (Transaction item : transactions){
+            balance = balance.add(item.getAmount());
+        }
+        return balance;
     }
 
     public void charge(Money amount, String reason) {
         if (!canAfford(amount))
             throw new IllegalStateException("Not enough balance");
-        balance = balance.sub(amount);
-        //balance(amount.neg());
+        //balance = balance.sub(amount);
         transactions.add(new Transaction(amount.neg(), reason));
     }
 
     public void recharge(Money amount) {
-        balance = balance.add(amount);
-        //balance(amount);
+        //balance = balance.add(amount);
         transactions.add(new Transaction(amount, "Reacharge acount"));
     }
 

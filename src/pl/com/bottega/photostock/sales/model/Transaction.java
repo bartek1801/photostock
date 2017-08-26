@@ -15,4 +15,8 @@ public class Transaction {
         this.amount = amount;
         this.decription = decription;
     }
+
+    public Money getAmount() {
+        return amount;
+    }
 }
