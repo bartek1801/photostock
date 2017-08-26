@@ -1,5 +1,10 @@
 package pl.com.bottega.photostock.sales.model;
 
+import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by bartek on 19.08.2017.
  */
@@ -17,11 +22,15 @@ public class Money implements Comparable<Money> {
     }
 
 
-    private Money (Long cents, String currency){
+
+    public Money(Long cents, String currency){//?? czy może być taki konstrunktor??
         this.cents = cents;
         this.currency = currency;
     }
 
+    public Long getCents() {
+        return cents;
+    }
 
     public static Money valueOf(Integer value) {
         return valueOf(value, DEFAULT_CURRENCY);
@@ -34,6 +43,12 @@ public class Money implements Comparable<Money> {
     public static Money valueOf(double value) {
         return new Money((long) (value * 100.0), DEFAULT_CURRENCY);
     }
+
+    public static Money valueOf(double value, String currency) {
+        return new Money((long) (value * 100.0), currency);
+    }
+
+
 
     public Money add(Money other) {
         checkCurrency(other);
@@ -71,6 +86,8 @@ public class Money implements Comparable<Money> {
         return currency.equals(money.currency);
     }
 
+
+
     @Override
     public int hashCode() {
         int result = cents.hashCode();
@@ -103,4 +120,22 @@ public class Money implements Comparable<Money> {
     public Money percent(int percent) {
         return new Money(cents * percent / 100, currency);
     }
+
+    public String currency(){
+        return currency;
+    }
+
+    public Money convert(String targetCurrency, double exRate) {
+        return new Money((long) (cents * exRate), targetCurrency);
+    }
+
+//     3. metoda Money convert(Money amount, String currency) konwertuje kwotę na zadaną walutę currency
+//    - jeśli currency jest walutą główną zwracamy convert(Money amount)
+//    - jeśli currency nie jest walutą główną i amount jest w walucie głównej dokonujemy konwersji bezpośrednio,
+//    np. c.convert(Money.valueOf(2, "PLN"), "USD") zwróci Money.valueOf(2 / 3.6020, "USD")
+//    - jeśli currency nie jest walutą główną i amount nie jest walutą główną, wtedy dokonujemy dwóch konwersji,
+//    najpierw zmieniamy amount na walutę główną,
+//    a później wynik na walutę docelową, np. c.convert(Money.valueOf(1, "EUR"), "USD") powinno zwrócić Money.valueOf(1 * 4.2345 / 3.6020, "PLN")
+//    - jeśli w mapie nie ma potrzebnego kursu wymiany wyrzuć IllegalArgumentException
+
 }

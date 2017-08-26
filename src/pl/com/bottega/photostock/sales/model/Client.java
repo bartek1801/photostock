@@ -1,9 +1,7 @@
 package pl.com.bottega.photostock.sales.model;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by bartek on 19.08.2017.
@@ -39,17 +37,25 @@ public class Client {
 
     public boolean canAfford(Money amount) {
         return balance.add(creditLimit).gte(amount);
+        //return balance(creditLimit).gte(amount);
+    }
+
+    private Money balance(Money amount){ //TODO
+        Money balance = Money.ZERO;
+        return balance.add(amount);
     }
 
     public void charge(Money amount, String reason) {
         if (!canAfford(amount))
             throw new IllegalStateException("Not enough balance");
         balance = balance.sub(amount);
+        //balance(amount.neg());
         transactions.add(new Transaction(amount.neg(), reason));
     }
 
     public void recharge(Money amount) {
         balance = balance.add(amount);
+        //balance(amount);
         transactions.add(new Transaction(amount, "Reacharge acount"));
     }
 

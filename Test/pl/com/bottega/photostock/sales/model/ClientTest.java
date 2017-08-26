@@ -12,7 +12,8 @@ import static org.junit.Assert.*;
 public class ClientTest {
 
     private final Address address = new Address("ul. Północna 11", "Poland", "Lublin", "02-298");
-    private Client clientWithCredit = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(100), Money.valueOf(100));
+    private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(200), Money.valueOf(50));
+    //private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
     private Client clientWithNoMoney = new Client("Jan Nowak", address);
 
 
@@ -32,8 +33,8 @@ public class ClientTest {
     public void shouldIfClientCanAffordWithCredit(){
 
         //then
-        assertTrue(clientWithCredit.canAfford(Money.valueOf(200)));
-        assertFalse(clientWithCredit.canAfford(Money.valueOf(201)));
+        assertTrue(clientWithMoney.canAfford(Money.valueOf(200)));
+        assertFalse(clientWithMoney.canAfford(Money.valueOf(251)));
 
     }
 
@@ -41,19 +42,20 @@ public class ClientTest {
     public void shouldChargeAndRechargeClient(){
 
         //when
-        clientWithCredit.charge(Money.valueOf(200), "Testowy zakup");
-        clientWithCredit.recharge(Money.valueOf(100));
+        clientWithMoney.charge(Money.valueOf(200), "Testowy zakup");
+        clientWithMoney.recharge(Money.valueOf(100));
 
         //then
-        assertTrue(clientWithCredit.canAfford(Money.valueOf(100)));
-        assertFalse(clientWithCredit.canAfford(Money.valueOf(101)));
+        assertTrue(clientWithMoney.canAfford(Money.valueOf(100)));
+        assertFalse(clientWithMoney.canAfford(Money.valueOf(151)));
     }
+
+
 
     @Test(expected = IllegalStateException.class)
     public void shouldNotAllowToChargeMoreThanCanAfford(){
-        clientWithCredit.charge(Money.valueOf(50), "testowy zakup");
-        clientWithCredit.charge(Money.valueOf(100), "testowy zakup");
-        clientWithCredit.charge(Money.valueOf(100), "testowy zakup");
+
+        clientWithMoney.charge(Money.valueOf(251), "testowy zakup");
     }
 
 }

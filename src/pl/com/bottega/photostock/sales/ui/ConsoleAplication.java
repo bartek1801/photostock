@@ -3,6 +3,9 @@ package pl.com.bottega.photostock.sales.ui;
 import pl.com.bottega.photostock.sales.infrastructure.InMemoryPictureRepository;
 import pl.com.bottega.photostock.sales.model.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by bartek on 06.08.2017.
  */
@@ -17,9 +20,14 @@ public class ConsoleAplication {
         Product p3 = repository.get(3L);
         Product p4 = repository.get(4L);
 
+        Map<String, Double> rates = new HashMap<>();
+        rates.put("USD", 3.6020); rates.put("EUR", 4.2345);
+        CurrencyConverter c = new CurrencyConverter("PLN", rates);
+
         //Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
         Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
-                ClientStatus.PLATINUM, Money.valueOf(100), Money.valueOf(200));
+                ClientStatus.PLATINUM, Money.valueOf(0), Money.valueOf(200));
+
         client.recharge(Money.valueOf(1000000));
         Reservation reservation = new Reservation(client);
         LightBox l = new LightBox(client, "koty");
@@ -46,6 +54,8 @@ public class ConsoleAplication {
         for (Product item : offer.getItems()){
             System.out.println(String.format("%d. | %s", item.getNumber(), item.calculatePrice(client)));
         }
+
+
 
         Money cost = offer.getTotalCost();
         if (client.canAfford(cost)){

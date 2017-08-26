@@ -2,6 +2,9 @@ package pl.com.bottega.photostock.sales.model;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,6 +18,10 @@ public class MoneyTest {
     private Money seventyCredit = Money.valueOf(70);
     private Money fiftyEuro = Money.valueOf(50, "EUR");
     private Money seventyEuro = Money.valueOf(70, "EUR");
+    private Money oneEuro = Money.valueOf(1, "EUR");
+    private Money tenPLN = Money.valueOf(1, "EUR");
+    private Money onePLN = Money.valueOf(1, "EUR");
+    private Money oneDolllar = Money.valueOf(1, "USD");
 
     @Test
     public void shoulAddMoney(){
@@ -110,5 +117,24 @@ public class MoneyTest {
         assertEquals(Money.valueOf(0.01), Money.valueOf(0.11).percent(10));
         assertEquals(Money.valueOf(0.01), Money.valueOf(0.19).percent(10));
     }
+
+    @Test
+    public void shouldGetCurrency(){
+        Money m = Money.valueOf(100, "PLN");
+
+        assertEquals("PLN", m.currency());
+    }
+
+    @Test
+    public void shouldConvertToTargetCurrency(){
+
+        assertEquals(Money.valueOf(3.6, "PLN"), Money.valueOf(1, "USD").convert("PLN", 3.6));
+        assertEquals(Money.valueOf(4.2, "PLN"), Money.valueOf(1, "EUR").convert("PLN", 4.2));
+
+    }
+
+
+
+
 
 }
