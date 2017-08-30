@@ -13,7 +13,8 @@ public class ClientTest {
 
     private final Address address = new Address("ul. Północna 11", "Poland", "Lublin", "02-298");
     //private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(200), Money.valueOf(50));
-    private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
+    private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP);
+    private Client clientVIP = new VIPClient("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
     private Client clientWithNoMoney = new Client("Jan Nowak", address);
 
 
@@ -31,6 +32,8 @@ public class ClientTest {
 
     @Test
     public void shouldIfClientCanAffordWithCredit(){
+        //when
+        clientWithMoney.recharge(Money.valueOf(50));
 
         //then
         assertTrue(clientWithMoney.canAfford(Money.valueOf(50)));
@@ -42,12 +45,12 @@ public class ClientTest {
     public void shouldChargeAndRechargeClient(){
 
         //when
-        clientWithMoney.charge(Money.valueOf(50), "Testowy zakup");
         clientWithMoney.recharge(Money.valueOf(100));
+        clientWithMoney.charge(Money.valueOf(50), "Testowy zakup");
 
         //then
-        assertTrue(clientWithMoney.canAfford(Money.valueOf(100)));
-        assertFalse(clientWithMoney.canAfford(Money.valueOf(151)));
+        assertTrue(clientWithMoney.canAfford(Money.valueOf(50)));
+        assertFalse(clientWithMoney.canAfford(Money.valueOf(51)));
     }
 
 
@@ -61,6 +64,7 @@ public class ClientTest {
     @Test
     public void shouldCalculateBalance(){
         //when
+        clientWithMoney.recharge(Money.valueOf(50));
         clientWithMoney.recharge(Money.valueOf(200));
         clientWithMoney.charge(Money.valueOf(50), "Testowy zakup 1");
         clientWithMoney.recharge(Money.valueOf(100));

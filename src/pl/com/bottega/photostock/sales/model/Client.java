@@ -14,22 +14,22 @@ public class Client {
     private Address address;
     private ClientStatus status;
     //private Money balance;
-    private Money creditLimit;
+    //private Money creditLimit;
     private List<Transaction> transactions = new LinkedList<>();
 
 
-    public Client(String name, Address address, ClientStatus status, Money creditLimit) { //, Money balance
+    public Client(String name, Address address, ClientStatus status) { //, Money balance, Money creditLimit
         this.name = name;
         this.address = address;
         this.status = status;
         //this.balance = balance;
-        this.creditLimit = creditLimit;
+        //this.creditLimit = creditLimit;
         if (balance().gt(Money.ZERO))
             transactions.add(new Transaction(balance(), "First charge"));
     }
 
     public Client(String name, Address address) {
-        this(name, address, ClientStatus.STANDARD, Money.ZERO); //, Money.ZERO
+        this(name, address, ClientStatus.STANDARD); //, Money.ZERO, Money.ZERO
     }
 
     public ClientStatus getStatus() {
@@ -38,10 +38,10 @@ public class Client {
 
 
     public boolean canAfford(Money amount) {
-        return balance().add(creditLimit).gte(amount);
+        return balance().gte(amount);
     }
 
-    private Money balance(){
+    protected Money balance(){
         Money balance = Money.ZERO;
         for (Transaction item : transactions){
             balance = balance.add(item.getAmount());
