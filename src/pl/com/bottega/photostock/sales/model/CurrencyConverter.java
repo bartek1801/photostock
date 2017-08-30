@@ -21,12 +21,14 @@ public class CurrencyConverter {
 
 
     public Money convert(Money amount) {
-        if (mainCurrency.equals(amount.currency()))
+        if (mainCurrency.equals(amount.currency())) {
             return amount;
-        else if (!exchangeRates.containsKey(amount.currency()))
-            throw new IllegalArgumentException("Rate is not defined");
-        else
-        return new Money((long) (exchangeRates.get(amount.currency()) * amount.getCents()), mainCurrency);
+        }
+        else {
+            containsCurrency(amount.currency());
+            return Money.valueOf(exchangeRates.get(amount.currency()) * amount.getCents() / 100, mainCurrency);
+            //return new Money((long) (exchangeRates.get(amount.currency()) * amount.getCents()), mainCurrency);
+        }
     }
 
     public Money convert(Money amount, String currency) {
@@ -34,12 +36,21 @@ public class CurrencyConverter {
             return convert(amount);
         //currency nie jest walutą główną i amount jest w walucie głównej
         else if (amount.currency().equals(mainCurrency))
-            return new Money((long) (amount.getCents() / exchangeRates.get(currency)), currency);
-            //jeśli w mapie nie ma potrzebnego kursu wymiany wyrzuć IllegalArgumentException
-        else if (!exchangeRates.containsKey(amount.currency()) || !exchangeRates.containsKey(currency))
-            throw new IllegalArgumentException("Rate is not defined");
+            return Money.valueOf(amount.getCents() / exchangeRates.get(currency) / 100, currency);
+           // return new Money((long) (amount.getCents() / exchangeRates.get(currency)), currency);
         //currency nie jest walutą główną i amount nie jest walutą główną,
-        else
-            return new Money((long) (amount.getCents() * exchangeRates.get(amount.currency()) / exchangeRates.get(currency)), mainCurrency);
+        else {
+            containsCurrency(amount.currency());
+            containsCurrency(currency);
+            return Money.valueOf(amount.getCents() * exchangeRates.get(amount.currency()) / exchangeRates.get(currency) / 100, mainCurrency);
+            //return new Money((long) (amount.getCents() * exchangeRates.get(amount.currency()) / exchangeRates.get(currency)), mainCurrency);
+        }
+    }
+
+    private boolean containsCurrency(String currency) {
+        //jeśli w mapie nie ma potrzebnego kursu wymiany wyrzuć IllegalArgumentException
+        if (!exchangeRates.containsKey(currency))
+            throw new IllegalArgumentException("Rate is not defined");
+        return true;
     }
 }

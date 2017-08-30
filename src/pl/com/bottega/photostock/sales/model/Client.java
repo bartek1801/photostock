@@ -24,8 +24,8 @@ public class Client {
         this.status = status;
         //this.balance = balance;
         this.creditLimit = creditLimit;
-//        if (balance.gt(Money.ZERO))
-//            transactions.add(new Transaction(balance, "First charge"));
+        if (balance().gt(Money.ZERO))
+            transactions.add(new Transaction(balance(), "First charge"));
     }
 
     public Client(String name, Address address) {
@@ -41,7 +41,7 @@ public class Client {
         return balance().add(creditLimit).gte(amount);
     }
 
-    Money balance(){
+    private Money balance(){
         Money balance = Money.ZERO;
         for (Transaction item : transactions){
             balance = balance.add(item.getAmount());

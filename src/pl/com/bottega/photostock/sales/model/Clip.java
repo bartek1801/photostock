@@ -17,7 +17,7 @@ public class Clip extends AbstractProduct {
     public Clip(Long number, Money price, Long length) {
         super(number, price);
         this.length = length;
-        this.active = true; //?? czy może super.true??????
+        this.active = true;
     }
 
     public static Long getLength() {

@@ -15,10 +15,10 @@ public class Picture extends AbstractProduct {
         this.tags = new HashSet<>(tags);
     }
 
-   /* public Picture(Long number, Set<String> tags, Money price, Boolean active){
-        super(price, active, number);
+    public Picture(Long number, Set<String> tags, Money price, Boolean active){
+        super(number, price, active);
         this.tags = new HashSet<>(tags); // Set nie jest immutable
-    }*/
+    }
 
     public Set<String> getTags() {
         return tags;

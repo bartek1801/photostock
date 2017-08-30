@@ -23,6 +23,7 @@ public class CurrencyConverterTest {
 
         assertEquals(Money.valueOf(3.60, "PLN"), c.convert(Money.valueOf(1, "USD")));
         assertEquals(Money.valueOf(360.20, "PLN"), c.convert(Money.valueOf(100, "USD")));
+        assertEquals(Money.valueOf(9.32, "PLN"), c.convert(Money.valueOf(2.59, "USD")));
         assertEquals(Money.valueOf(4.23, "PLN"), c.convert(Money.valueOf(1, "EUR")));
         assertEquals(Money.valueOf(423.45, "PLN"), c.convert(Money.valueOf(100, "EUR")));
         assertEquals(Money.valueOf(100, "PLN"), c.convert(Money.valueOf(100, "PLN")));

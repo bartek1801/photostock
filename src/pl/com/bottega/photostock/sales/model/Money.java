@@ -105,7 +105,6 @@ public class Money implements Comparable<Money> {
     public boolean lt(Money other) {
         return compareTo(other) < 0;
     }
-
     public boolean lte(Money other) {
         return compareTo(other) <= 0;
     }
@@ -129,13 +128,5 @@ public class Money implements Comparable<Money> {
         return new Money((long) (cents * exRate), targetCurrency);
     }
 
-//     3. metoda Money convert(Money amount, String currency) konwertuje kwotę na zadaną walutę currency
-//    - jeśli currency jest walutą główną zwracamy convert(Money amount)
-//    - jeśli currency nie jest walutą główną i amount jest w walucie głównej dokonujemy konwersji bezpośrednio,
-//    np. c.convert(Money.valueOf(2, "PLN"), "USD") zwróci Money.valueOf(2 / 3.6020, "USD")
-//    - jeśli currency nie jest walutą główną i amount nie jest walutą główną, wtedy dokonujemy dwóch konwersji,
-//    najpierw zmieniamy amount na walutę główną,
-//    a później wynik na walutę docelową, np. c.convert(Money.valueOf(1, "EUR"), "USD") powinno zwrócić Money.valueOf(1 * 4.2345 / 3.6020, "PLN")
-//    - jeśli w mapie nie ma potrzebnego kursu wymiany wyrzuć IllegalArgumentException
 
 }
