@@ -62,6 +62,8 @@ public abstract class AbstractProduct implements Product {
         return number.hashCode();
     }
 
+
+
     @Override
     public Long getNumber() {
         return number;

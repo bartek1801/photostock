@@ -24,7 +24,9 @@ public class ConsoleAplication {
         rates.put("USD", 3.6020); rates.put("EUR", 4.2345);
         CurrencyConverter c = new CurrencyConverter("PLN", rates);
 
-        Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
+        //Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
+        Client client = new VIPClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
+                ClientStatus.PLATINUM, Money.valueOf(50));
 //        Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
 //                ClientStatus.PLATINUM, Money.valueOf(0), Money.valueOf(200));
 

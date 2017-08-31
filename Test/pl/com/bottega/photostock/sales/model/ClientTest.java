@@ -13,8 +13,8 @@ public class ClientTest {
 
     private final Address address = new Address("ul. Północna 11", "Poland", "Lublin", "02-298");
     //private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(200), Money.valueOf(50));
-    private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP);
-    private Client clientVIP = new VIPClient("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
+    private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.STANDARD);
+    //private Client clientVIP = new VIPClient("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
     private Client clientWithNoMoney = new Client("Jan Nowak", address);
 
 
@@ -71,7 +71,14 @@ public class ClientTest {
         clientWithMoney.charge(Money.valueOf(250), "Testowy zakup 2");
         clientWithMoney.charge(Money.valueOf(50), "Testowy zakup 3");
 
-        //assertEquals(Money.valueOf(-50), clientWithMoney.balance());
+        assertEquals(Money.ZERO, clientWithMoney.balance());
+
+    }
+
+    @Test
+    public void shouldCalculate0BalanceAtFirst(){
+
+        assertEquals(Money.ZERO, clientWithNoMoney.balance());
 
     }
 
