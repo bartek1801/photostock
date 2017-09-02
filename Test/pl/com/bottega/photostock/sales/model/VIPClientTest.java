@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 public class VIPClientTest {
 
     private final Address address = new Address("ul. Północna 11", "Poland", "Lublin", "02-298");
-    private VIPClient clientVIP = new VIPClient("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
+    private VIPClient clientVIP = new VIPClient("Jan Nowak", address, ClientStatus.VIP, Money.ZERO, Money.valueOf(50));
 
     @Test
     public void shouldCanAffordVIPClient(){
@@ -40,7 +40,7 @@ public class VIPClientTest {
         clientVIP.charge(Money.valueOf(30), "Testowy zakup");
 
         //then
-        assertEquals(Money.valueOf(20), clientVIP.getCreditLimit());
+        assertEquals(Money.valueOf(-30), clientVIP.balance());
 
     }
 
@@ -52,7 +52,6 @@ public class VIPClientTest {
         clientVIP.recharge(Money.valueOf(50));
 
         //then
-        assertEquals(Money.valueOf(50), clientVIP.getCreditLimit());
         assertEquals(Money.valueOf(20), clientVIP.balance());
 
     }

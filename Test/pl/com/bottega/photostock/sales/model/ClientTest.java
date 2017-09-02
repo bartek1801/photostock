@@ -13,9 +13,9 @@ public class ClientTest {
 
     private final Address address = new Address("ul. Północna 11", "Poland", "Lublin", "02-298");
     //private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(200), Money.valueOf(50));
-    private Client clientWithMoney = new Client("Jan Nowak", address, ClientStatus.STANDARD);
+    private Client clientWithMoney = new StandardClient("Jan Nowak", address, ClientStatus.STANDARD, Money.ZERO);
     //private Client clientVIP = new VIPClient("Jan Nowak", address, ClientStatus.VIP, Money.valueOf(50));
-    private Client clientWithNoMoney = new Client("Jan Nowak", address);
+    private Client clientWithNoMoney = new StandardClient("Jan Nowak", address);
 
 
     @Test

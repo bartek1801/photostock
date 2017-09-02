@@ -23,7 +23,7 @@ public class Money implements Comparable<Money> {
 
 
 
-    public Money(Long cents, String currency){//?? czy może być taki konstrunktor??
+    private Money(Long cents, String currency){//?? czy może być taki konstrunktor??
         this.cents = cents;
         this.currency = currency;
     }
@@ -125,7 +125,7 @@ public class Money implements Comparable<Money> {
     }
 
     public Money convert(String targetCurrency, double exRate) {
-        return new Money((long) (cents * exRate), targetCurrency);
+        return new Money((long)(cents * exRate), targetCurrency);
     }
 
 

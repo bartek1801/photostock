@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by bartek on 20.08.2017.
  */
-public class InMemoryPictureRepository implements PictureRepository {
+public class InMemoryProductRepository implements ProductRepository {
 
     private static final Map<Long, Product> REPO = new HashMap<>();//wspólne dla wszystkich obiektów tej klasy
 

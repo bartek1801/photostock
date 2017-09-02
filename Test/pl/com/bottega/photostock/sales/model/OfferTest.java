@@ -21,7 +21,7 @@ public class OfferTest {
         Product p1 = new Picture(1l, tags, Money.valueOf(10) );
         Product p2 = new Picture(2L, tags, Money.valueOf(5));
         Product p3 = new Picture(3L, tags, Money.valueOf(15));
-        Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
+        Client client = new StandardClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
         client.recharge(Money.valueOf(1000000));
         items.add(p1);
         items.add(p2);

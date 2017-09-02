@@ -2,6 +2,7 @@ package pl.com.bottega.photostock.sales.model;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.UUID;
 
 /**
  * Created by bartek on 06.08.2017.
@@ -9,15 +10,17 @@ import java.util.LinkedList;
 public class Reservation {
 
     private Client owner;
+    private String number;
     private Collection<Product> items = new LinkedList<>();
 
     public Reservation(Client owner){
+        this.number = UUID.randomUUID().toString();
         this.owner = owner;
     }
 
     public void add(Product product){
-        if (!product.isAvailable())
-            throw new IllegalStateException("Product is not available");
+        product.ensureAvailable();
+
         items.add(product);
         product.reservedPer(owner);
     }
@@ -38,4 +41,7 @@ public class Reservation {
         return items.size();
     }
 
+    public String getNumber() {
+        return number;
+    }
 }

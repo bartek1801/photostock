@@ -1,6 +1,6 @@
 package pl.com.bottega.photostock.sales.ui;
 
-import pl.com.bottega.photostock.sales.infrastructure.InMemoryPictureRepository;
+import pl.com.bottega.photostock.sales.infrastructure.InMemoryProductRepository;
 import pl.com.bottega.photostock.sales.model.*;
 
 import java.util.HashMap;
@@ -13,7 +13,7 @@ public class ConsoleAplication {
 
 
     public static void main(String[] args) {
-        PictureRepository repository = new InMemoryPictureRepository();
+        ProductRepository repository = new InMemoryProductRepository();
 
         Product p1 = repository.get(1L);//pobieramy produkty z repozytorium
         Product p2 = repository.get(2L);
@@ -24,10 +24,10 @@ public class ConsoleAplication {
         rates.put("USD", 3.6020); rates.put("EUR", 4.2345);
         CurrencyConverter c = new CurrencyConverter("PLN", rates);
 
-        //Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
+        //Client client = new StandardClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
         Client client = new VIPClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
-                ClientStatus.PLATINUM, Money.valueOf(50));
-//        Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
+                ClientStatus.PLATINUM, Money.ZERO, Money.valueOf(50));
+//        Client client = new VIPClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),
 //                ClientStatus.PLATINUM, Money.valueOf(0), Money.valueOf(200));
 
         client.recharge(Money.valueOf(1000000));

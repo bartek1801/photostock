@@ -5,7 +5,7 @@ import java.util.Optional;
 /**
  * Created by bartek on 20.08.2017.
  */
-public interface PictureRepository {
+public interface ProductRepository {
 
     //pobiera obiekt o identyfikatorze
     Product get(Long number);

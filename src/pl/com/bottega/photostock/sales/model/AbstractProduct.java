@@ -33,8 +33,7 @@ public abstract class AbstractProduct implements Product {
 
     @Override
     public void reservedPer(Client client){
-        if (!isAvailable())
-            throw new IllegalStateException("Product is not available");
+        ensureAvailable();
         reservedBy = client;
     }
 
@@ -62,7 +61,15 @@ public abstract class AbstractProduct implements Product {
         return number.hashCode();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        AbstractProduct abstractProduct = (AbstractProduct) o;
+
+        return number.equals(abstractProduct.number);
+    }
 
     @Override
     public Long getNumber() {

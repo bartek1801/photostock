@@ -22,8 +22,9 @@ public class LightBox {
     public void add(Product product){
         if (items.contains(product))
             throw new IllegalStateException("Picture is alredy added to LightBox");
-        if (!product.isAvailable())
-            throw new IllegalArgumentException("Picture is not available");
+
+        product.ensureAvailable();
+
         items.add(product);
     }
 

@@ -11,35 +11,18 @@ public class VIPClient extends Client {
     private Money creditLimit;
 
 
-    public VIPClient(String name, Address address, ClientStatus status, Money creditLimit) {
-        super(name, address, status);
+    public VIPClient(String name, Address address, ClientStatus status, Money balance, Money creditLimit) {
+        super(name, address, status, balance);
         this.creditLimit = creditLimit;
     }
 
-    public Money getCreditLimit() {
-        return creditLimit;
+    public VIPClient(String name, Address address) {
+        this(name, address, ClientStatus.VIP, Money.ZERO, Money.ZERO);
     }
-
 
     @Override
     public boolean canAfford(Money amount) {
         return balance().add(creditLimit).gte(amount);
     }
 
-    @Override
-    public void charge(Money amount, String reason) {
-        super.charge(amount, reason);
-        calculateCreditLimit(balance());
-    }
-
-    private void calculateCreditLimit(Money balance) {
-        if (balance().lt(Money.ZERO))
-            creditLimit = creditLimit.add(balance);
-    }
-
-    @Override
-    public void recharge(Money amount) {
-        calculateCreditLimit(balance().neg());
-        super.recharge(amount);
-    }
 }

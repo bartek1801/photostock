@@ -13,7 +13,7 @@ public class LightBoxTest {
     @Test(expected = IllegalStateException.class)
     public void add() {
         //given
-        Client client = new Client("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
+        Client client = new StandardClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
         LightBox newLightBox = new LightBox(client, "name of LightBox");
         Set<String> tags = new HashSet<>();
         Product p1 = new Picture(1l, tags, Money.valueOf(10));

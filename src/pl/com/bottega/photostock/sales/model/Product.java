@@ -15,4 +15,10 @@ public interface Product {
     void soldPer(Client client);
 
     Long getNumber();
+
+    //metoda defaultowa może korzystać tylko z innych metod w interfejsie
+    default void ensureAvailable() {
+        if (!isAvailable())
+            throw new ProductNotAvailableException(this);
+    }
 }
