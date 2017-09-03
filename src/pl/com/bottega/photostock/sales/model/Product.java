@@ -21,4 +21,5 @@ public interface Product {
         if (!isAvailable())
             throw new ProductNotAvailableException(this);
     }
+
 }

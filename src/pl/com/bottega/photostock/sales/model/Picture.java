@@ -25,6 +25,10 @@ public class Picture extends AbstractProduct {
         return tags;
     }
 
+    public boolean hasTags(Set<String> tags){
+        return this.tags.containsAll(tags);
+    }
+
  /*   @Override
     public boolean equals(Object o) {
         if (this == o) return true;

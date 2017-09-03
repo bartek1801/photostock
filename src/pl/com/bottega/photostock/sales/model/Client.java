@@ -4,6 +4,7 @@ import sun.plugin2.main.client.MessagePassingOneWayJSObject;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by bartek on 19.08.2017.
@@ -13,15 +14,20 @@ public abstract class Client {
     private String name;
     private Address address;
     private ClientStatus status;
+    private String number;
     private List<Transaction> transactions = new LinkedList<>();
+
+
 
 
     public Client(String name, Address address, ClientStatus status, Money balance) {
         this.name = name;
         this.address = address;
         this.status = status;
-        if (balance.gt(Money.ZERO))
+        if (balance.gt(Money.ZERO)) {
             transactions.add(new Transaction(balance, "First charge"));
+        }
+        this.number = UUID.randomUUID().toString();
     }
 
     public Client(String name, Address address) {
@@ -55,6 +61,10 @@ public abstract class Client {
 
     public int discountPercent() {
         return status.getDiscount();
+    }
+
+    public String getNumber() {
+        return number;
     }
 
 }

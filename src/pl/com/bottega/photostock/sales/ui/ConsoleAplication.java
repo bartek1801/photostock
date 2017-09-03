@@ -1,5 +1,6 @@
 package pl.com.bottega.photostock.sales.ui;
 
+import pl.com.bottega.photostock.sales.infrastructure.InMemoryClientRepository;
 import pl.com.bottega.photostock.sales.infrastructure.InMemoryProductRepository;
 import pl.com.bottega.photostock.sales.model.*;
 
@@ -23,6 +24,9 @@ public class ConsoleAplication {
         Map<String, Double> rates = new HashMap<>();
         rates.put("USD", 3.6020); rates.put("EUR", 4.2345);
         CurrencyConverter c = new CurrencyConverter("PLN", rates);
+
+//        ClientRepository clientRepository = new InMemoryClientRepository();
+//        Client client = clientRepository.get()
 
         //Client client = new StandardClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"));
         Client client = new VIPClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "02-298"),

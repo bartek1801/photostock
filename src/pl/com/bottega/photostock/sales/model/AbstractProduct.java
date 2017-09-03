@@ -4,6 +4,7 @@ package pl.com.bottega.photostock.sales.model;
  * Created by bartek on 20.08.2017.
  */
 public abstract class AbstractProduct implements Product {
+
     protected Long number;
     protected Money price;
     protected Boolean active;
@@ -33,7 +34,8 @@ public abstract class AbstractProduct implements Product {
 
     @Override
     public void reservedPer(Client client){
-        ensureAvailable();
+        if (!isAvailable())
+            throw new ProductNotAvailableException(this);
         reservedBy = client;
     }
 

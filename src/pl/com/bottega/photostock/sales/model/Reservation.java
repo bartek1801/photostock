@@ -33,7 +33,6 @@ public class Reservation {
     }
 
     public Offer generateOffer(){
-
         return new Offer(owner, items);
     }
 
