@@ -1,8 +1,8 @@
-package pl.com.bottega.photostock.sales.infrastructure;
+package pl.com.bottega.photostock.sales.infrastructure.repositories;
 
 
 import pl.com.bottega.photostock.sales.model.Reservation;
-import pl.com.bottega.photostock.sales.model.ReservationRepository;
+import pl.com.bottega.photostock.sales.model.repositories.ReservationRepository;
 
 import java.util.HashMap;
 import java.util.Map;

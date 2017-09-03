@@ -18,8 +18,6 @@ public abstract class Client {
     private List<Transaction> transactions = new LinkedList<>();
 
 
-
-
     public Client(String name, Address address, ClientStatus status, Money balance) {
         this.name = name;
         this.address = address;
@@ -67,4 +65,11 @@ public abstract class Client {
         return number;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public boolean hasLogin(String login) {
+        return name.equals(login);
+    }
 }
