@@ -1,6 +1,5 @@
 package pl.com.bottega.photostock.sales.ui;
 
-import pl.com.bottega.photostock.sales.infrastructure.InMemoryClientRepository;
 import pl.com.bottega.photostock.sales.infrastructure.InMemoryProductRepository;
 import pl.com.bottega.photostock.sales.model.*;
 
@@ -16,10 +15,10 @@ public class ConsoleAplication {
     public static void main(String[] args) {
         ProductRepository repository = new InMemoryProductRepository();
 
-        Product p1 = repository.get(1L);//pobieramy produkty z repozytorium
-        Product p2 = repository.get(2L);
-        Product p3 = repository.get(3L);
-        Product p4 = repository.get(4L);
+        Picture p1 = (Picture) repository.get(1L);//pobieramy produkty z repozytorium
+        Picture p2 = (Picture) repository.get(2L);
+        Picture p3 = (Picture) repository.get(3L);
+        Picture p4 = (Picture) repository.get(4L);
 
         Map<String, Double> rates = new HashMap<>();
         rates.put("USD", 3.6020); rates.put("EUR", 4.2345);

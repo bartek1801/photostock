@@ -1,8 +1,6 @@
 package pl.com.bottega.photostock.sales.model;
 
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by bartek on 06.08.2017.
@@ -10,16 +8,18 @@ import java.util.List;
 public class LightBox {
 
     private String name;
-    private List<Product> items = new LinkedList<>();
+    private List<Picture> items = new LinkedList<>();
     private Client owner;
+    private String number;
 
     public LightBox(Client owner, String name){
         this.owner = owner;
         this.name = name;
+        this.number = UUID.randomUUID().toString();
     }
 
 
-    public void add(Product product){
+    public void add(Picture product){
         if (items.contains(product))
             throw new IllegalStateException("Picture is alredy added to LightBox");
 
@@ -28,7 +28,7 @@ public class LightBox {
         items.add(product);
     }
 
-    public void remove(Product product){
+    public void remove(Picture product){
         if(!items.remove(product))
             throw new IllegalArgumentException("Product is not on your LightBox");
     }
@@ -42,7 +42,20 @@ public class LightBox {
         return owner;
     }
 
-    public List<Product> getItems() {
+    public List<Picture> getItems() {
         return Collections.unmodifiableList(items);
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public List<Picture> getPictures(Set<Long> pictureNumbers) {
+        List<Picture> results = new LinkedList<>();
+        for (Picture pic : items){
+            if (pictureNumbers.contains(pic.getNumber()))
+                results.add(pic);
+        }
+        return results;
     }
 }

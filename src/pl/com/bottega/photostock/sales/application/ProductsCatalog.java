@@ -5,7 +5,6 @@ import pl.com.bottega.photostock.sales.model.Money;
 import pl.com.bottega.photostock.sales.model.Product;
 import pl.com.bottega.photostock.sales.model.ProductRepository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 

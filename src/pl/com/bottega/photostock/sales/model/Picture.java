@@ -29,14 +29,6 @@ public class Picture extends AbstractProduct {
         return this.tags.containsAll(tags);
     }
 
- /*   @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractProduct abstractProduct = (AbstractProduct) o;
-
-        return number.equals(abstractProduct.number);
-    }*/
 
 }
