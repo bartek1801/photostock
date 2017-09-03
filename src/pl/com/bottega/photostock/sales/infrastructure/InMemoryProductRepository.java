@@ -68,7 +68,7 @@ public class InMemoryProductRepository implements ProductRepository {
         if (to != null & to.lt(price))
             return false;
 
-        return true; // 
+        return true; //
     }
 
     @Override
