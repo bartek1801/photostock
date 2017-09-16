@@ -3,7 +3,7 @@ package pl.com.bottega.photostock.sales.infrastructure;
 import pl.com.bottega.photostock.sales.application.LightBoxManagment;
 import pl.com.bottega.photostock.sales.application.ProductCatalog;
 import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryClientRepository;
-import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryLihtBoxRepository;
+import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryLightBoxRepository;
 import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryProductRepository;
 import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryReservationRepository;
 import pl.com.bottega.photostock.sales.model.repositories.ClientRepository;
@@ -26,16 +26,16 @@ public class PhotostockApp {
 
     public void start(){
         Scanner scanner = new Scanner(System.in);
-        LightBoxRepository lightBoxRepository = new InMemoryLihtBoxRepository();
+        LightBoxRepository lightBoxRepository = new InMemoryLightBoxRepository();
         ClientRepository clientRepository = new InMemoryClientRepository();
         ProductRepository productRepository = new InMemoryProductRepository();
         ReservationRepository reservationRepository = new InMemoryReservationRepository();
 
         LightBoxManagment lightBoxManagment = new LightBoxManagment(lightBoxRepository, clientRepository,
                 productRepository, reservationRepository);
-        LightBoxManagmentScreen lightBoxManagmentScreen = new LightBoxManagmentScreen(scanner, lightBoxManagment);
-        ProductCatalog productCatalog = new ProductCatalog(productRepository);
         AuthenticationManager authenticationManager = new AuthenticationManager(clientRepository);
+        LightBoxManagmentScreen lightBoxManagmentScreen = new LightBoxManagmentScreen(scanner, lightBoxManagment, authenticationManager);
+        ProductCatalog productCatalog = new ProductCatalog(productRepository);
         SearchScreen searchScreen = new SearchScreen(scanner,authenticationManager, productCatalog);
         MainScreen mainScreen = new MainScreen(scanner, lightBoxManagmentScreen, searchScreen);
         AuthenticationScreen authenticationScreen = new AuthenticationScreen(scanner, authenticationManager);

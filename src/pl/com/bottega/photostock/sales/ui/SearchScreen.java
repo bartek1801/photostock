@@ -51,7 +51,7 @@ public class SearchScreen {
         String moneyString = scanner.nextLine();
         try {
             Integer moneyInteger = Integer.parseInt(moneyString);
-            return Money.valueOf(scanner.nextInt());
+            return Money.valueOf(moneyInteger);
         } catch (Exception ex) {
             return null;
         }

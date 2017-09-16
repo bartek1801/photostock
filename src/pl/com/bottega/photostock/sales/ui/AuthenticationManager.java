@@ -17,16 +17,20 @@ public class AuthenticationManager {
         this.clientRepository = clientRepository;
     }
 
-    public Client getClient(){
+    public Client getClient() {
         return client;
     }
 
     public boolean authenticate(String login) {
         Optional<Client> clientOptional = clientRepository.getByLogin(login);
-        if (clientOptional.isPresent()){
+        if (clientOptional.isPresent()) {
             client = clientOptional.get();
             return true;
         }
         return false;
+    }
+
+    public String getClientNumber() {
+        return client.getNumber();
     }
 }

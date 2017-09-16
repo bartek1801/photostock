@@ -27,17 +27,17 @@ public class LightBoxManagment {
         this.reservationRepository = reservationRepository;
     }
 
-    public String create(String clientNumber, String lightBoxName){
+    public String create(String clientNumber, String lightBoxName) {
         Client client = clientRepository.get(clientNumber);
         LightBox lightBox = new LightBox(client, lightBoxName);
         lightBoxRepository.save(lightBox);
         return lightBox.getNumber();
     }
 
-    void add(String lightBoxNumber, Long pictureNumber){
+    void add(String lightBoxNumber, Long pictureNumber) {
         Product product = productRepository.get(pictureNumber);
         if (!(product instanceof Picture)) {
-            throw new IllegalArgumentException(String.format("Product %s is not a picture", pictureNumber ));
+            throw new IllegalArgumentException(String.format("Product %s is not a picture", pictureNumber));
         }
         LightBox lightBox = lightBoxRepository.get(lightBoxNumber);
         Picture picture = (Picture) product;
@@ -55,20 +55,24 @@ public class LightBoxManagment {
         lightBoxRepository.save(lightBox);
     }*/
 
-   void reserve(String lightBoxNumber, Set<Long> pictureNumbers, String reservationNumber){
-       LightBox lightBox = lightBoxRepository.get(lightBoxNumber);
-       Reservation reservation = reservationRepository.get(reservationNumber);
-       List<Picture> pictures = lightBox.getPictures(pictureNumbers);
-       if (pictureNumbers.size() != pictures.size())
-           throw new IllegalArgumentException("Invalid product numbers");
-       for (Picture picture : pictures){
-           picture.ensureAvailable();
-       }
-       for (Picture picture : pictures){
-           reservation.add(picture);
-           productRepository.save(picture);
-       }
-       reservationRepository.save(reservation);
-   }
+    void reserve(String lightBoxNumber, Set<Long> pictureNumbers, String reservationNumber) {
+        LightBox lightBox = lightBoxRepository.get(lightBoxNumber);
+        Reservation reservation = reservationRepository.get(reservationNumber);
+        List<Picture> pictures = lightBox.getPictures(pictureNumbers);
+        if (pictureNumbers.size() != pictures.size())
+            throw new IllegalArgumentException("Invalid product numbers");
+        for (Picture picture : pictures) {
+            picture.ensureAvailable();
+        }
+        for (Picture picture : pictures) {
+            reservation.add(picture);
+            productRepository.save(picture);
+        }
+        reservationRepository.save(reservation);
+    }
 
+    public List<LightBox> getLightBoxes(String clientNumber) {
+        return lightBoxRepository.getClientLightBoxes(clientNumber);
+
+    }
 }
