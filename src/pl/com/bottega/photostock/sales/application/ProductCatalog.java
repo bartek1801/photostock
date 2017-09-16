@@ -1,26 +1,27 @@
 package pl.com.bottega.photostock.sales.application;
 
-import pl.com.bottega.photostock.sales.model.Client;
 import pl.com.bottega.photostock.sales.model.Money;
+import pl.com.bottega.photostock.sales.model.Client;
 import pl.com.bottega.photostock.sales.model.Product;
 import pl.com.bottega.photostock.sales.model.repositories.ProductRepository;
 
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by bartek on 02.09.2017.
- */
 public class ProductCatalog {
 
-    private ProductRepository productRepository;
+    private ProductRepository repository;
 
-    public ProductCatalog(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public ProductCatalog(ProductRepository repository) {
+        this.repository = repository;
     }
 
     public List<Product> find(Client client, Set<String> tags, Money from, Money to) {
-        return productRepository.find(client, tags, from, to);
+       return repository.find(client, tags, from, to);
     }
+
+    // find(null, null, null)
+    // find(jakiestagi, null, null)
+    // find(jakiestagi, null, kwota)
 
 }

@@ -2,46 +2,36 @@ package pl.com.bottega.photostock.sales.ui;
 
 import java.util.Scanner;
 
-/**
- * Created by bartek on 03.09.2017.
- */
 public class MainScreen {
 
-    private LightBoxManagmentScreen lightBoxManagmentScreen;
-    private SearchScreen searchScreen;
     private Scanner scanner;
+    private LightBoxManagementScreen lightBoxManagementScreen;
+    private SearchScreen searchScreen;
 
-    public MainScreen(Scanner scanner, LightBoxManagmentScreen lightBoxManagmentScreen, SearchScreen searchScreen) {
+    public MainScreen(Scanner scanner, LightBoxManagementScreen lightBoxManagementScreen, SearchScreen searchScreen) {
         this.scanner = scanner;
-        this.lightBoxManagmentScreen = lightBoxManagmentScreen;
+        this.lightBoxManagementScreen = lightBoxManagementScreen;
         this.searchScreen = searchScreen;
     }
 
-    public void show(){
-        while (true) {
-            showMenu();
-            int decision = scanner.nextInt();
-            scanner.nextLine();
-            switch (decision) {
-                case 1:
-                    searchScreen.show();
-                    break;
-                case 2:
-                    lightBoxManagmentScreen.show();
-                    break;
-                case 3:
-                    return;
-                default:
-                    System.out.println("Sorry, ale nie rozumiem!!!");
+    public void show() {
+        Menu menu = new Menu(scanner);
+        menu.setTitleLabel("!!!Witamy w PHOTOSTOCK!!!");
+        menu.addItem("1. Wyszukaj produkty.", new Runnable() {
+            @Override
+            public void run() {
+                searchScreen.show();
             }
-        }
+        });
+        menu.addItem("2. Lajt boksy.", new Runnable() {
+            @Override
+            public void run() {
+                lightBoxManagementScreen.show();
+            }
+        });
+        menu.setLastItemLabel("3. Zakończ.");
+        menu.show();
+
     }
 
-    private void showMenu() {
-        System.out.println("Witamy w  PHOTOSTOCK!!!");
-        System.out.println("1. Wyszukaj Produkty.");
-        System.out.println("2. Light Boxy.");
-        System.out.println("3. Zakończ.");
-        System.out.print("Co chcesz zrobić Panie?");
-    }
 }

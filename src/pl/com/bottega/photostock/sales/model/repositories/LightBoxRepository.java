@@ -4,14 +4,11 @@ import pl.com.bottega.photostock.sales.model.LightBox;
 
 import java.util.List;
 
-/**
- * Created by bartek on 03.09.2017.
- */
 public interface LightBoxRepository {
 
-    LightBox get(String number);
-
     void save(LightBox lightBox);
+
+    LightBox get(String number);
 
     List<LightBox> getClientLightBoxes(String clientNumber);
 }

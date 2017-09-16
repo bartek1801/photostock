@@ -2,115 +2,78 @@ package pl.com.bottega.photostock.sales.model;
 
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by bartek on 19.08.2017.
- */
 public class MoneyTest {
 
     private Money fiftyCredit = Money.valueOf(50);
     private Money seventyCredit = Money.valueOf(70);
-    private Money fiftyEuro = Money.valueOf(50, "EUR");
-    private Money seventyEuro = Money.valueOf(70, "EUR");
-    private Money oneEuro = Money.valueOf(1, "EUR");
-    private Money tenPLN = Money.valueOf(1, "EUR");
-    private Money onePLN = Money.valueOf(1, "EUR");
-    private Money oneDolllar = Money.valueOf(1, "USD");
+    private Money fiftyEur = Money.valueOf(50, "EUR");
 
     @Test
-    public void shoulAddMoney(){
+    public void shouldAddMoney() {
+        // when
+        Money sum = fiftyCredit.add(seventyCredit);
 
-        //when
-        Money m1PlusM2 = fiftyCredit.add(seventyCredit);
-
-        //then
+        // then
         Money expected = Money.valueOf(120);
-        assertEquals(expected, m1PlusM2);
-    }
-
-    @Test
-    public void shoulAddMoneyV2(){
-
-        //when
-        Money m1PlusM2 = fiftyEuro.add(seventyEuro);
-
-        //then
-        Money expected = Money.valueOf(120,"EUR");
-        assertEquals(expected, m1PlusM2);
+        assertEquals(expected, sum);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotAddMoneyInDifferentCurrencies(){
-        //given
-        Money m1 = Money.valueOf(50, "USD");
-        Money m2 = Money.valueOf(70, "EUR");
-
-        //when
-        m1.add(m2);
-
+    public void shouldNotAddMoneyInDifferentCurrencies() {
+        // when
+        fiftyEur.add(seventyCredit);
     }
 
-    @ Test
-    public void shoulSubstractMoney(){
+    @Test
+    public void shouldSubtractMoney() {
+        // when
+        Money dif = fiftyCredit.sub(seventyCredit);
 
-        //when
-        Money m1MinusM2 = fiftyCredit.sub(seventyCredit);
-
-        //then
+        // then
         Money expected = Money.valueOf(-20);
-        assertEquals(expected, m1MinusM2);
+        assertEquals(expected, dif);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotSubstractMoneyInDifferentCurrencies(){
-        //given
-        Money m1 = Money.valueOf(70, "USD");
-        Money m2 = Money.valueOf(50, "EUR");
-
-        //when
-        m1.add(m2);
-
+    public void shouldNotSubtractMoneyInDifferentCurrencies() {
+        // when
+        fiftyEur.sub(seventyCredit);
     }
 
-
     @Test
-    public void shouldCompareMoney(){
-
+    public void shouldCompareMoney() {
         assertTrue(fiftyCredit.compareTo(seventyCredit) < 0);
         assertTrue(seventyCredit.compareTo(fiftyCredit) > 0);
         assertTrue(fiftyCredit.compareTo(fiftyCredit) == 0);
     }
 
     @Test
-    public void shouldCompareMoneyUsingBooleanMethods(){
-
+    public void shouldCompareMoneyUsingBooleanMethods() {
         assertTrue(fiftyCredit.lt(seventyCredit));
         assertTrue(fiftyCredit.lte(seventyCredit));
         assertTrue(seventyCredit.gt(fiftyCredit));
         assertTrue(seventyCredit.gte(fiftyCredit));
         assertFalse(fiftyCredit.gt(seventyCredit));
+        assertFalse(fiftyCredit.gte(seventyCredit));
+        assertFalse(seventyCredit.lt(fiftyCredit));
         assertFalse(seventyCredit.lte(fiftyCredit));
-        assertFalse(seventyCredit.lt(seventyCredit));
-        assertFalse(fiftyCredit.gt(fiftyCredit));
         assertTrue(fiftyCredit.gte(fiftyCredit));
         assertTrue(fiftyCredit.lte(fiftyCredit));
-
-        //dopisz resztę przypadków
+        assertFalse(fiftyCredit.lt(fiftyCredit));
+        assertFalse(fiftyCredit.gt(fiftyCredit));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCompareDifferentCurrencies(){
-        fiftyCredit.compareTo(fiftyEuro);
+    public void shouldNotCompareDifferentCurrencies() {
+        fiftyCredit.compareTo(fiftyEur);
     }
 
     @Test
-    public void shouldCalculatePercent(){
+    public void shouldCalculatePercent() {
         assertEquals(Money.valueOf(5), fiftyCredit.percent(10));
         assertEquals(Money.valueOf(5.50), fiftyCredit.percent(11));
         assertEquals(Money.valueOf(75), fiftyCredit.percent(150));
@@ -119,22 +82,8 @@ public class MoneyTest {
     }
 
     @Test
-    public void shouldGetCurrency(){
-        Money m = Money.valueOf(100, "PLN");
-
-        assertEquals("PLN", m.currency());
+    public void shouldConvertCurrencies() {
+        assertEquals(Money.valueOf(3.5, "PLN"), Money.valueOf(1, "USD").convert("PLN", 3.5));
     }
-
-    @Test
-    public void shouldConvertToTargetCurrency(){
-
-        assertEquals(Money.valueOf(3.6, "PLN"), Money.valueOf(1, "USD").convert("PLN", 3.6));
-        assertEquals(Money.valueOf(4.2, "PLN"), Money.valueOf(1, "EUR").convert("PLN", 4.2));
-
-    }
-
-
-
-
 
 }

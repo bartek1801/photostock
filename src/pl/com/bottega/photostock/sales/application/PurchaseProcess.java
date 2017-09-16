@@ -3,15 +3,10 @@ package pl.com.bottega.photostock.sales.application;
 import pl.com.bottega.photostock.sales.model.*;
 import pl.com.bottega.photostock.sales.model.repositories.ClientRepository;
 import pl.com.bottega.photostock.sales.model.repositories.ProductRepository;
-import pl.com.bottega.photostock.sales.model.repositories.PurchaseRepository;
 import pl.com.bottega.photostock.sales.model.repositories.ReservationRepository;
 
 import java.util.Collection;
 
-
-/**
- * Created by bartek on 02.09.2017.
- */
 public class PurchaseProcess {
 
     private static final Money TOLERANCE = Money.valueOf(10);
@@ -23,7 +18,6 @@ public class PurchaseProcess {
 
     public PurchaseProcess(ClientRepository repository, ReservationRepository reservationRepository,
                            ProductRepository productRepository, PurchaseRepository purchaseRepository) {
-        //wstrzykiwanie zależnośći z zewnątrz/ Dependency Injection !!!!!!!!!!
         this.clientRepository = repository;
         this.reservationRepository = reservationRepository;
         this.productRepository = productRepository;
@@ -47,7 +41,8 @@ public class PurchaseProcess {
 
     public Offer calculateOffer(String reservationNumber) {
         Reservation reservation = reservationRepository.get(reservationNumber);
-        return reservation.generateOffer();
+        Offer offer = reservation.generateOffer();
+        return offer;
     }
 
     public PurchaseStatus confirm(String reservationNumber, Offer clientOffer) {
@@ -63,12 +58,10 @@ public class PurchaseProcess {
                 for (Product product : products)
                     productRepository.save(product);
                 return PurchaseStatus.SUCCESS;
-            }
-            else
+            } else
                 return PurchaseStatus.NOT_ENOUGH_FOUNDS;
-        }
-        else
-            return PurchaseStatus.OFFER_MISSMATCH;
+        } else
+            return PurchaseStatus.OFFER_MISMATCH;
     }
 
 }

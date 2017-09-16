@@ -1,8 +1,5 @@
 package pl.com.bottega.photostock.sales.model;
 
-/**
- * Created by bartek on 02.09.2017.
- */
 public class StandardClient extends Client {
 
     public StandardClient(String name, Address address, ClientStatus status, Money balance) {
@@ -10,11 +7,11 @@ public class StandardClient extends Client {
     }
 
     public StandardClient(String name, Address address) {
-        this(name, address, ClientStatus.STANDARD, Money.ZERO);
+        super(name, address);
     }
 
-    @Override
     public boolean canAfford(Money amount) {
-        return balance().gte(amount);
+        return amount.lte(balance());
     }
+
 }

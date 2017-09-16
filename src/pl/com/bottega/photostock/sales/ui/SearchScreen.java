@@ -7,24 +7,21 @@ import pl.com.bottega.photostock.sales.model.Product;
 
 import java.util.*;
 
-/**
- * Created by bartek on 03.09.2017.
- */
 public class SearchScreen {
 
+    private Scanner scanner;
     private AuthenticationManager authenticationManager;
     private ProductCatalog productCatalog;
-    private Scanner scanner;
 
-    public SearchScreen(Scanner scanner, AuthenticationManager authenticationManager, ProductCatalog productsCatalog) {
+    public SearchScreen(Scanner scanner, AuthenticationManager authenticationManager, ProductCatalog productCatalog) {
         this.scanner = scanner;
         this.authenticationManager = authenticationManager;
-        this.productCatalog = productsCatalog;
+        this.productCatalog = productCatalog;
     }
 
     public void show() {
-        System.out.println("Podaj Kryteria wyszukiwania");
-        System.out.print("Tagi:  ");
+        System.out.println("Podaj kryteria wyszukiwania");
+        System.out.print("Tagi: ");
         Set<String> tags = getTags();
         System.out.print("Cena od: ");
         Money priceFrom = getMoney();
@@ -32,10 +29,9 @@ public class SearchScreen {
         Money priceTo = getMoney();
 
         List<Product> productList = productCatalog.find(authenticationManager.getClient(), tags, priceFrom, priceTo);
-        for (Product product : productList) {
-            showProduct(product);
-        }
 
+        for (Product product : productList)
+            showProduct(product);
     }
 
     private void showProduct(Product product) {
@@ -44,7 +40,8 @@ public class SearchScreen {
         if (product instanceof Picture)
             tags = ((Picture) product).getTags().toString();
         Money price = product.calculatePrice(authenticationManager.getClient());
-        System.out.println(String.format("%d - %s - %s %s", product.getNumber(), productType, tags, price));
+        System.out.println(String.format("%d - %s - %s %s",
+                product.getNumber(), productType, tags, price));
     }
 
     private Money getMoney() {
@@ -57,17 +54,12 @@ public class SearchScreen {
         }
     }
 
-    /*for (Iterator<String> i = tagsList.iterator(); i.hasNext(); )
-            if (i.next().length() == 0)
-                i.remove();*/
-    //zastosowanie Iteratora do przypadku poniżej
-
     public Set<String> getTags() {
         String line = scanner.nextLine();
         String[] tagsArray = line.split(" ");
         List<String> tagsList = Arrays.asList(tagsArray);
         Set<String> tags = new HashSet<>(tagsList);
-        tags.remove(" ");
+        tags.remove("");
         return tags;
     }
 }

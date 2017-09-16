@@ -1,10 +1,6 @@
 package pl.com.bottega.photostock.sales.model;
 
-/**
- * Created by bartek on 03.09.2017.
- */
 public interface Product {
-
     Money calculatePrice(Client client);
 
     boolean isAvailable();
@@ -22,4 +18,3 @@ public interface Product {
             throw new ProductNotAvailableException(this);
     }
 }
-

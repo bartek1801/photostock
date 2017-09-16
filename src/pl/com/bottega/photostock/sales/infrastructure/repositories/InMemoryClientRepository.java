@@ -1,38 +1,28 @@
 package pl.com.bottega.photostock.sales.infrastructure.repositories;
 
-import pl.com.bottega.photostock.sales.model.*;
+import pl.com.bottega.photostock.sales.model.Address;
+import pl.com.bottega.photostock.sales.model.Client;
 import pl.com.bottega.photostock.sales.model.repositories.ClientRepository;
+import pl.com.bottega.photostock.sales.model.VIPClient;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-/**
- * Created by bartek on 02.09.2017.
- */
 public class InMemoryClientRepository implements ClientRepository {
 
     private static final Map<String, Client> REPO = new HashMap<>();
 
     static {
-        Address address = new Address("ul. Północna 11", "Poland", "Lublin", "02-298");
-        Client c1 = new StandardClient("Jan Nowak", address, ClientStatus.STANDARD, Money.ZERO);
-        Client c2 = new VIPClient("Jan Kowalski", address, ClientStatus.PLATINUM, Money.ZERO, Money.valueOf(50));
-        Client c3 = new StandardClient("Jan Kwiatkowski", address, ClientStatus.GOLD, Money.valueOf(50));
-        Client c4 = new VIPClient("Jan N", address, ClientStatus.PLATINUM, Money.valueOf(100), Money.valueOf(50));
-
-        REPO.put(c1.getNumber(), c1);
-        REPO.put(c2.getNumber(), c2);
-        REPO.put(c3.getNumber(), c3);
-        REPO.put(c4.getNumber(), c4);
+        Client c = new VIPClient("Jan Nowak", new Address("ul. Północna 11", "Poland", "Lublin", "20-001"));
+        REPO.put(c.getNumber(), c);
     }
 
-
     @Override
-    public Client get(String clientNumber) {
-        if (!REPO.containsKey(clientNumber))
-            throw new IllegalArgumentException(String.format("No client %s found", clientNumber));
-        return REPO.get(clientNumber);
+    public Client get(String number) {
+        if(!REPO.containsKey(number))
+            throw new IllegalArgumentException(String.format("No client %s found", number));
+        return REPO.get(number);
     }
 
     @Override
@@ -42,10 +32,9 @@ public class InMemoryClientRepository implements ClientRepository {
 
     @Override
     public Optional<Client> getByLogin(String login) {
-        for (Client client : REPO.values()){
-            if (client.hasLogin(login))
+        for(Client client : REPO.values())
+            if(client.hasLogin(login))
                 return Optional.of(client);
-        }
         return Optional.empty();
     }
 }

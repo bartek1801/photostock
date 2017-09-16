@@ -2,51 +2,39 @@ package pl.com.bottega.photostock.sales.model;
 
 import java.util.*;
 
-/**
- * Created by bartek on 06.08.2017.
- */
 public class Offer {
 
-    private List<Product> items; //musi być lista żeby można było ją sortować
     private Client owner;
+    private List<Product> items;
 
     public Offer(Client owner, Collection<Product> items) {
         this.owner = owner;
         this.items = new LinkedList<>(items);
         this.items.sort(new Comparator<Product>() {
-            //Client owner;
-            // wtedy aby dostać sie do pola w klasie Offer trzeba napisać
-            //return p2.calculatePrice(Offer.this.owner).compareTo(p1.calculatePrice(Offer.this.owner));
             @Override
-            public int compare(Product p1, Product p2) {
-                return p2.calculatePrice(owner).compareTo(p1.calculatePrice(owner));
+            public int compare(Product o1, Product o2) {
+                return o2.calculatePrice(owner).compareTo(o1.calculatePrice(owner));
             }
         });
     }
 
-
-    public boolean sameAs(Offer offer, Money tolerance){
+    public boolean sameAs(Offer offer, Money tolerance) {
         return false;
     }
 
-    public int getItemsCount(){
+    public int getItemsCount() {
         return items.size();
     }
 
-    public Money getTotalCost(){
-        Money totalCost = Money.ZERO;
-        for (Product item : items){
-            totalCost = totalCost.add(item.calculatePrice(owner)); //metoda add() tworzu nowy obiekt typu Money
-        }
-        return totalCost;
+    public Money getTotalCost() {
+        Money total = Money.ZERO;
+        for (Product item : items)
+            total = total.add(item.calculatePrice(owner));
+        return total;
     }
 
     public Collection<Product> getItems() {
-        return Collections.unmodifiableCollection(items); // lub  new LinkedList<>(items)
-    }
-
-    public Client getOwner() {
-        return owner;
+        return Collections.unmodifiableCollection(items);
     }
 
     public Purchase purchase() {
@@ -56,4 +44,7 @@ public class Offer {
         return purchase;
     }
 
+    public Client getOwner() {
+        return owner;
+    }
 }

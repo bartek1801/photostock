@@ -1,31 +1,27 @@
 package pl.com.bottega.photostock.sales.infrastructure.repositories;
 
-import pl.com.bottega.photostock.sales.model.*;
-import pl.com.bottega.photostock.sales.model.repositories.ProductRepository;
-
 import java.util.*;
 
-/**
- * Created by bartek on 20.08.2017.
- */
+import pl.com.bottega.photostock.sales.model.Money;
+import pl.com.bottega.photostock.sales.model.Picture;
+import pl.com.bottega.photostock.sales.model.repositories.ProductRepository;
+import pl.com.bottega.photostock.sales.model.Product;
+import pl.com.bottega.photostock.sales.model.Client;
+
 public class InMemoryProductRepository implements ProductRepository {
 
-    private static final Map<Long, Product> REPO = new HashMap<>();//wspólne dla wszystkich obiektów tej klasy
+    private static final Map<Long, Product> REPO;
 
-    //statyczny blok inicjujący, mamy w nim dostęp do zmiennych statycznych czyli REPO
-    //wykona się w momencie załadowania klasy
-    //konstruktor dla klasy
     static {
+        REPO = new HashMap<>();
         Set<String> tags = new HashSet<>();
         tags.add("kotki");
-        Product p1 = new Picture(1l, tags, Money.valueOf(10) );
+        Product p1 = new Picture(1L, tags, Money.valueOf(10));
         Product p2 = new Picture(2L, tags, Money.valueOf(5));
         Product p3 = new Picture(3L, tags, Money.valueOf(15));
-        //Product p4 = new Clip (4L, Money.valueOf(25),120L);
         REPO.put(1L, p1);
         REPO.put(2L, p2);
         REPO.put(3L, p3);
-        //REPO.put(4L, p4);
     }
 
     @Override
@@ -43,36 +39,37 @@ public class InMemoryProductRepository implements ProductRepository {
             return Optional.empty();
     }
 
+
+    @Override
+    public void save(Product product) {
+        REPO.put(product.getNumber(), product);
+    }
+
     @Override
     public List<Product> find(Client client, Set<String> tags, Money from, Money to) {
         List<Product> results = new LinkedList<>();
-        for (Product product : REPO.values()){
-            if (product instanceof Picture) {   // lub product.getClass().equals(Picture.class) nie zadziała w przypadku klasy otomnej po Picture
+        for (Product product : REPO.values()) {
+            if (product instanceof Picture) {
                 Picture picture = (Picture) product;
                 if (matchesCriteria(picture, client, tags, from, to))
                     results.add(picture);
             }
         }
-      return results;
+        return results;
     }
 
-    private boolean matchesCriteria(Picture picture, Client client, Set<String> tags, Money from, Money to){
+    private boolean matchesCriteria(Picture picture, Client client, Set<String> tags, Money from, Money to) {
         if (tags != null && !picture.hasTags(tags))
-            return false;               // picture sie nie łapie wiec zwracamy false
+            return false;
 
         Money price = picture.calculatePrice(client);
 
-        if (from != null && from.gte(price))
+        if (from != null && from.gt(price))
             return false;
 
-        if (to != null & to.lt(price))
+        if (to != null && to.lt(price))
             return false;
 
-        return true; //
-    }
-
-    @Override
-    public void save(Product product) {
-        REPO.put(product.getNumber(), product);
+        return true;
     }
 }

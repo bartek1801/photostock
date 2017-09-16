@@ -1,8 +1,5 @@
 package pl.com.bottega.photostock.sales.model;
 
-/**
- * Created by bartek on 19.08.2017.
- */
 public class Address {
 
     private String line1, line2, country, city, postalCode;
@@ -16,6 +13,6 @@ public class Address {
     }
 
     public Address(String line1, String country, String city, String postalCode) {
-        this(line1, null, country, city, postalCode );
+        this(line1, null, country, city, postalCode);
     }
 }

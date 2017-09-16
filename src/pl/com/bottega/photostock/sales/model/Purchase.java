@@ -5,9 +5,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.UUID;
 
-/**
- * Created by bartek on 06.08.2017.
- */
 public class Purchase {
 
     private Collection<Product> items;
@@ -15,13 +12,12 @@ public class Purchase {
     private LocalDateTime purchaseDate = LocalDateTime.now();
     private String number;
 
-    public Purchase(Client buyer, Collection<Product> items){
+    public Purchase(Client buyer, Collection<Product> items) {
         this.number = UUID.randomUUID().toString();
         this.buyer = buyer;
         this.items = new LinkedList<>(items);
-        for (Product product : items){
+        for (Product product : items)
             product.soldPer(buyer);
-        }
     }
 
     public String getNumber() {
