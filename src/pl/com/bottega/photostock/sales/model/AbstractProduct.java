@@ -13,6 +13,15 @@ public abstract class AbstractProduct implements Product {
         this.number = number;
     }
 
+    public AbstractProduct(Long number, Money price, Boolean active, Client reservedBy, Client owner) {
+        this.number = number;
+        this.price = price;
+        this.active = active;
+        this.reservedBy = reservedBy;
+        this.owner = owner;
+    }
+
+
     @Override
     public Money calculatePrice(Client client) {
         return price.percent(100 - client.discountPercent());

@@ -2,10 +2,10 @@ package pl.com.bottega.photostock.sales.infrastructure;
 
 import pl.com.bottega.photostock.sales.application.LightBoxManagement;
 import pl.com.bottega.photostock.sales.application.ProductCatalog;
-import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryClientRepository;
-import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryLightBoxRepository;
-import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryProductRepository;
-import pl.com.bottega.photostock.sales.infrastructure.repositories.InMemoryReservationRepository;
+import pl.com.bottega.photostock.sales.application.PurchaseProcess;
+import pl.com.bottega.photostock.sales.infrastructure.repositories.*;
+import pl.com.bottega.photostock.sales.model.Purchase;
+import pl.com.bottega.photostock.sales.model.PurchaseRepository;
 import pl.com.bottega.photostock.sales.model.repositories.ClientRepository;
 import pl.com.bottega.photostock.sales.model.repositories.LightBoxRepository;
 import pl.com.bottega.photostock.sales.model.repositories.ProductRepository;
@@ -26,12 +26,15 @@ public class PhotostockApp {
         ClientRepository clientRepository = new InMemoryClientRepository();
         ProductRepository productRepository = new InMemoryProductRepository();
         ReservationRepository reservationRepository = new InMemoryReservationRepository();
+        PurchaseRepository purchaseRepository = new InMemoryPurchaseRepository();
         LightBoxManagement lightBoxManagement = new LightBoxManagement(lightBoxRepository, clientRepository,
                 productRepository, reservationRepository);
         AuthenticationManager authenticationManager = new AuthenticationManager(clientRepository);
         AddProductToLightBoxScreen addProductToLightBoxScreen = new AddProductToLightBoxScreen(lightBoxManagement, scanner);
+        PurchaseProcess purchaseProcess = new PurchaseProcess(clientRepository, reservationRepository, productRepository, purchaseRepository);
+        PurchaseLightBoxScreen purchaseLightBoxScreen = new PurchaseLightBoxScreen(lightBoxManagement, purchaseProcess, scanner);
         LightBoxManagementScreen lightBoxManagementScreen = new LightBoxManagementScreen(scanner, lightBoxManagement,
-                authenticationManager, addProductToLightBoxScreen);
+                authenticationManager, addProductToLightBoxScreen, purchaseLightBoxScreen);
         ProductCatalog productCatalog = new ProductCatalog(productRepository);
         SearchScreen searchScreen = new SearchScreen(scanner, authenticationManager, productCatalog);
         MainScreen mainScreen = new MainScreen(scanner, lightBoxManagementScreen, searchScreen);

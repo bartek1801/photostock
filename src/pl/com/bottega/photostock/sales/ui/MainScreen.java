@@ -17,19 +17,9 @@ public class MainScreen {
     public void show() {
         Menu menu = new Menu(scanner);
         menu.setTitleLabel("!!!Witamy w PHOTOSTOCK!!!");
-        menu.addItem("1. Wyszukaj produkty.", new Runnable() {
-            @Override
-            public void run() {
-                searchScreen.show();
-            }
-        });
-        menu.addItem("2. Lajt boksy.", new Runnable() {
-            @Override
-            public void run() {
-                lightBoxManagementScreen.show();
-            }
-        });
-        menu.setLastItemLabel("3. Zakończ.");
+        menu.addItem("Wyszukaj produkty", () -> searchScreen.show());
+        menu.addItem("Lajt boksy", () -> lightBoxManagementScreen.show());
+        menu.setLastItemLabel("Zakończ");
         menu.show();
 
     }

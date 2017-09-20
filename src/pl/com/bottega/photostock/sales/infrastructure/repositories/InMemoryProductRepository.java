@@ -1,6 +1,8 @@
 package pl.com.bottega.photostock.sales.infrastructure.repositories;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import pl.com.bottega.photostock.sales.model.Money;
 import pl.com.bottega.photostock.sales.model.Picture;
@@ -48,13 +50,23 @@ public class InMemoryProductRepository implements ProductRepository {
     @Override
     public List<Product> find(Client client, Set<String> tags, Money from, Money to) {
         List<Product> results = new LinkedList<>();
-        for (Product product : REPO.values()) {
+       /* for (Product product : REPO.values()) {
             if (product instanceof Picture) {
                 Picture picture = (Picture) product;
                 if (matchesCriteria(picture, client, tags, from, to))
                     results.add(picture);
             }
-        }
+        }*/
+        REPO.values().stream().filter(new Predicate<Product>() {
+            @Override
+            public boolean test(Product product) {
+                if (product instanceof Picture) {
+                    Picture picture = (Picture) product;
+                    return (matchesCriteria(picture, client, tags, from, to));
+                }
+                return false;
+            }
+        }).collect(Collectors.toList());
         return results;
     }
 

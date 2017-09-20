@@ -10,16 +10,18 @@ public class Offer {
     public Offer(Client owner, Collection<Product> items) {
         this.owner = owner;
         this.items = new LinkedList<>(items);
-        this.items.sort(new Comparator<Product>() {
+        this.items.sort((o1, o2) -> o2.calculatePrice(owner).compareTo(o1.calculatePrice(owner))); // wyrażenie lambda
+
+        /*this.items.sort(new Comparator<Product>() {
             @Override
             public int compare(Product o1, Product o2) {
                 return o2.calculatePrice(owner).compareTo(o1.calculatePrice(owner));
             }
-        });
+        });*/
     }
 
     public boolean sameAs(Offer offer, Money tolerance) {
-        return false;
+        return getTotalCost().sub(offer.getTotalCost()).abs().lte(tolerance);
     }
 
     public int getItemsCount() {

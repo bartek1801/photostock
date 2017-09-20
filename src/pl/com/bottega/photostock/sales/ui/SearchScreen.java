@@ -20,6 +20,18 @@ public class SearchScreen {
     }
 
     public void show() {
+        /*Menu menu = new Menu(scanner);
+        menu.setTitleLabel("Podaj kryteria wyszukiwania");
+        menu.addItem("Tagi: ", () -> {
+            Set<String> tags = getTags();
+        });
+        menu.addItem("Cena od: ", () -> {
+            Money priceFrom = getMoney();
+        });
+        menu.addItem("Cena do: ", () -> {
+            Money priceTo = getMoney();
+        });*/
+
         System.out.println("Podaj kryteria wyszukiwania");
         System.out.print("Tagi: ");
         Set<String> tags = getTags();
@@ -27,7 +39,6 @@ public class SearchScreen {
         Money priceFrom = getMoney();
         System.out.print("Cena do: ");
         Money priceTo = getMoney();
-
         List<Product> productList = productCatalog.find(authenticationManager.getClient(), tags, priceFrom, priceTo);
 
         for (Product product : productList)
