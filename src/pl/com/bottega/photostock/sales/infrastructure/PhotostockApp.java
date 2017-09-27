@@ -24,7 +24,11 @@ public class PhotostockApp {
         Scanner scanner = new Scanner(System.in);
         LightBoxRepository lightBoxRepository = new InMemoryLightBoxRepository();
         ClientRepository clientRepository = new InMemoryClientRepository();
-        ProductRepository productRepository = new InMemoryProductRepository();
+       // ProductRepository productRepository = new InMemoryProductRepository();
+
+        String CSVProductRepoPath = "C:\\Users\\bartek\\IdeaProjects\\photostock\\src\\pl\\com\\bottega\\photostock\\sales\\infrastructure\\repositories\\products.csv";
+        ProductRepository productRepository = new CSVProductRepository(CSVProductRepoPath, clientRepository);
+
         ReservationRepository reservationRepository = new InMemoryReservationRepository();
         PurchaseRepository purchaseRepository = new InMemoryPurchaseRepository();
         LightBoxManagement lightBoxManagement = new LightBoxManagement(lightBoxRepository, clientRepository,

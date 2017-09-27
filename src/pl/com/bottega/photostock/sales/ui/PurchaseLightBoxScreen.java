@@ -7,6 +7,7 @@ import pl.com.bottega.photostock.sales.model.LightBox;
 import pl.com.bottega.photostock.sales.model.Offer;
 import pl.com.bottega.photostock.sales.model.Product;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class PurchaseLightBoxScreen {
         this.scanner = scanner;
     }
 
-    public void show(LightBox lightBox) {
+    public void show(LightBox lightBox) throws IOException {
         /*Set<Long> numbers = new HashSet<>();
         for (Product p : lightBox.getItems()){
             numbers.add(p.getNumber());

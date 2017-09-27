@@ -57,6 +57,8 @@ public class InMemoryProductRepository implements ProductRepository {
                     results.add(picture);
             }
         }*/
+
+
         REPO.values().stream().filter(new Predicate<Product>() {
             @Override
             public boolean test(Product product) {

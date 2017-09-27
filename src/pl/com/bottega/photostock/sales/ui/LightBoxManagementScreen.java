@@ -3,6 +3,7 @@ package pl.com.bottega.photostock.sales.ui;
 import pl.com.bottega.photostock.sales.application.LightBoxManagement;
 import pl.com.bottega.photostock.sales.model.LightBox;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -70,7 +71,13 @@ public class LightBoxManagementScreen {
                 addProductToLightBoxScreen.show(lightBox);
             }
         });
-        menu.addItem("Kup wszystkie produkty LightBoxa", () -> purchaseLightBoxScreen.show(lightBox));
+        menu.addItem("Kup wszystkie produkty LightBoxa", () -> {
+            try {
+                purchaseLightBoxScreen.show(lightBox);
+            } catch (IOException e) {
+                System.out.println("Nie znaleziono pliku");
+            }
+        });
         menu.setLastItemLabel("Wróć do poprzedniego menu.");
         menu.show();
     }

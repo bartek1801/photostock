@@ -19,4 +19,10 @@ public interface Product {
         if (!isAvailable())
             throw new ProductNotAvailableException(this);
     }
+
+    Money getPrice();
+
+    Client gerReservedBy();
+
+    Client getOwner();
 }

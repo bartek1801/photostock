@@ -5,6 +5,7 @@ import pl.com.bottega.photostock.sales.model.Money;
 import pl.com.bottega.photostock.sales.model.Picture;
 import pl.com.bottega.photostock.sales.model.Product;
 
+import java.io.IOException;
 import java.util.*;
 
 public class SearchScreen {
@@ -19,7 +20,7 @@ public class SearchScreen {
         this.productCatalog = productCatalog;
     }
 
-    public void show() {
+    public void show() throws IOException {
         /*Menu menu = new Menu(scanner);
         menu.setTitleLabel("Podaj kryteria wyszukiwania");
         menu.addItem("Tagi: ", () -> {

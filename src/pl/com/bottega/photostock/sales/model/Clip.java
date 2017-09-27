@@ -13,4 +13,8 @@ public class Clip extends AbstractProduct {
         this(price, true, number, length);
     }
 
+    @Override
+    public Money getPrice() {
+        return price;
+    }
 }

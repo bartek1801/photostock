@@ -76,4 +76,12 @@ public abstract class AbstractProduct implements Product {
     public Long getNumber() {
         return number;
     }
+
+    public Client gerReservedBy() {
+        return reservedBy;
+    }
+
+    public Client getOwner() {
+        return owner;
+    }
 }
