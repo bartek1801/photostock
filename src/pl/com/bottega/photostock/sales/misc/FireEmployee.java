@@ -26,9 +26,9 @@ public class FireEmployee {
 
         Connection connection = getConnection();
 
-        ResultSet resultSet = getResultSet(connection, GET_EMPLOYEE, firstName, lastName);
+        ResultSet resultSet = getEmployeesByName(connection, GET_EMPLOYEE, firstName, lastName);
         checkEmployee(resultSet);
-
+        
         resultSet.beforeFirst();
         while (resultSet.next()) {
             System.out.printf("%d %s %s %s %s %s",
@@ -106,7 +106,7 @@ public class FireEmployee {
         stmt.executeUpdate();
     }
 
-    private static ResultSet getResultSet (Connection connection, String sql, String firstName, String lastName) throws SQLException {
+    private static ResultSet getEmployeesByName (Connection connection, String sql, String firstName, String lastName) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setString(1, firstName);
         statement.setString(2, lastName);
