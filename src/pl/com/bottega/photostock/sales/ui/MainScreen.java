@@ -1,6 +1,5 @@
 package pl.com.bottega.photostock.sales.ui;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class MainScreen {
@@ -18,17 +17,10 @@ public class MainScreen {
     public void show() {
         Menu menu = new Menu(scanner);
         menu.setTitleLabel("!!!Witamy w PHOTOSTOCK!!!");
-        menu.addItem("Wyszukaj produkty", () -> {
-            try {
-                searchScreen.show();
-            } catch (IOException e) {
-                System.out.println("Nie znaleziono pliku");
-            }
-        });
+        menu.addItem("Wyszukaj produkty", () -> searchScreen.show());
         menu.addItem("Lajt boksy", () -> lightBoxManagementScreen.show());
         menu.setLastItemLabel("Zakończ");
         menu.show();
-
     }
 
 }

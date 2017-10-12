@@ -12,11 +12,12 @@ public class MenuItem {
         this.action = action;
     }
 
-    public void show(){
+    public void show() {
         System.out.println(String.format("%d. %s", index, label));
     }
 
-    public void executeAction(){
+    public void executeAction() {
         action.run();
     }
+
 }

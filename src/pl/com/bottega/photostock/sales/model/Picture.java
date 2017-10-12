@@ -1,6 +1,7 @@
 package pl.com.bottega.photostock.sales.model;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +18,8 @@ public class Picture extends AbstractProduct {
         this.tags = new HashSet<>(tags);
     }
 
-    public Picture(Long number, String[] tags, Money price,Boolean active,  Client reservedBy, Client owner) {
-        super(number, price, active, reservedBy, owner);
+    public Picture(Long number, String[] tags, Money price, Client reservedBy, Client owner, boolean active) {
+        super(number, price, reservedBy, owner, active);
         this.tags = new HashSet<>(Arrays.asList(tags));
     }
 
@@ -29,12 +30,4 @@ public class Picture extends AbstractProduct {
     public Set<String> getTags() {
         return tags;
     }
-
-    @Override
-    public Money getPrice() {
-        return price;
-    }
-
-
-
 }

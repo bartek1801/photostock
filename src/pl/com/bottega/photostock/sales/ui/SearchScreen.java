@@ -5,7 +5,6 @@ import pl.com.bottega.photostock.sales.model.Money;
 import pl.com.bottega.photostock.sales.model.Picture;
 import pl.com.bottega.photostock.sales.model.Product;
 
-import java.io.IOException;
 import java.util.*;
 
 public class SearchScreen {
@@ -20,19 +19,7 @@ public class SearchScreen {
         this.productCatalog = productCatalog;
     }
 
-    public void show() throws IOException {
-        /*Menu menu = new Menu(scanner);
-        menu.setTitleLabel("Podaj kryteria wyszukiwania");
-        menu.addItem("Tagi: ", () -> {
-            Set<String> tags = getTags();
-        });
-        menu.addItem("Cena od: ", () -> {
-            Money priceFrom = getMoney();
-        });
-        menu.addItem("Cena do: ", () -> {
-            Money priceTo = getMoney();
-        });*/
-
+    public void show() {
         System.out.println("Podaj kryteria wyszukiwania");
         System.out.print("Tagi: ");
         Set<String> tags = getTags();
@@ -40,6 +27,7 @@ public class SearchScreen {
         Money priceFrom = getMoney();
         System.out.print("Cena do: ");
         Money priceTo = getMoney();
+
         List<Product> productList = productCatalog.find(authenticationManager.getClient(), tags, priceFrom, priceTo);
 
         for (Product product : productList)

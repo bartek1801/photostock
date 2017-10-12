@@ -1,19 +1,15 @@
 package pl.com.bottega.photostock.sales.misc;
 
-import javax.sound.midi.Soundbank;
 import java.io.*;
 
 public class IOPlay {
 
-
-    static class  Person implements Serializable{
+    static class Person implements Serializable {
 
         static final long serialVersionUID = 1L;
 
         int age;
         String name;
-
-        String gender;
 
         public Person(int age, String name) {
             this.age = age;
@@ -22,12 +18,11 @@ public class IOPlay {
     }
 
     public static void main(String[] args) {
-       // basicRead();
-       // basicReadTrywidthResources();
-       // characterRead();
-       // bufferedRead();
-       // basicWrite();
+        //basicRead();
+        //basicReadTryWithResources();
+        //characterRead();
         //bufferedRead();
+        //basicWrite();
         //writer();
         //printWriter();
         //writeObjects();
@@ -35,16 +30,16 @@ public class IOPlay {
     }
 
     private static void readObjects() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\objects.bin"))) {
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("/home/maciuch/tmp/objects.bin"))) {
             Object o;
-            while ((o = ois.readObject()) != null){
+            while((o = ois.readObject()) != null) {
                 Person p = (Person) o;
-                System.out.printf("%s, %d", p.name, p.age);
+                System.out.printf("%s %d", p.name, p.age);
                 System.out.println();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (EOFException eofException){
+        } catch (EOFException eofException) {
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,7 +49,7 @@ public class IOPlay {
     }
 
     private static void writeObjects() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\objects.bin"))) {
+        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/home/maciuch/tmp/objects.bin"))) {
             oos.writeObject(new Person(17, "Jan Nowak"));
             oos.writeObject(new Person(22, "Janina Nowak"));
             oos.writeObject(new Person(19, "Marcin Nowak"));
@@ -67,121 +62,110 @@ public class IOPlay {
     }
 
     private static void printWriter() {
-        try (OutputStream outputStream = new FileOutputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test_zapis3.txt");
-             PrintStream printStream = new PrintStream(outputStream);
-        ){
-            printStream.println("Zażółć gęślą jaźń");
-            printStream.println("Ala ma kota");
-
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie udało się utworzyć zapisu");
-        }
-        catch (IOException e){
+        try (
+                OutputStream outputStream = new FileOutputStream("/home/maciuch/tmp/output.txt");
+                PrintStream ps = new PrintStream(outputStream)
+        ) {
+            ps.println("Zażółć gęślą jaźń");
+            ps.println("Ala ma kota");
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie udało się otworzyć do zapisu");
+        } catch (IOException e) {
             System.out.println("Błąd wyjścia");
         }
     }
 
     private static void writer() {
-        try (OutputStream outputStream = new FileOutputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test_zapis2.txt");
-             Writer writer = new OutputStreamWriter(outputStream);
-        ){
+        try (
+                OutputStream outputStream = new FileOutputStream("/home/maciuch/tmp/output.txt");
+                Writer writer = new OutputStreamWriter(outputStream, "CP1250")
+        ) {
             writer.write("Zażółć gęślą jaźń\r\n");
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie udało się utworzyć zapisu");
-        }
-        catch (IOException e){
+            writer.write("Ala ma kota");
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie udało się otworzyć do zapisu");
+        } catch (IOException e) {
             System.out.println("Błąd wyjścia");
         }
     }
+
 
     private static void basicWrite() {
-        try (OutputStream outputStream = new FileOutputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test_zapis.txt", true)){
-            outputStream.write("Zażółć gęślą jaźń".getBytes());
-            //outputStream.write("Zażółć gęślą jaźń".getBytes("CP1250"));
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie udało się utworzyć zapisu");
-        }
-        catch (IOException e){
+        try (OutputStream outputStream = new FileOutputStream("/home/maciuch/tmp/output.txt", true)) {
+            outputStream.write("Zażółć gęślą jaźń".getBytes("CP1250"));
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie udało się otworzyć do zapisu");
+        } catch (IOException e) {
             System.out.println("Błąd wyjścia");
         }
     }
 
+
     private static void bufferedRead() {
-        try (InputStream inputStream = new FileInputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test3.txt")) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        try (InputStream inputStream = new FileInputStream("/home/maciuch/tmp/test.txt")) {
+            InputStreamReader reader = new InputStreamReader(inputStream, "UTF8");
+            BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
             }
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie ma takiego pliku");
-        }
-        catch (IOException e){
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie ma takiego pliku!!!!");
+        } catch (IOException e) {
             System.out.println("Błąd wejścia");
         }
     }
+
 
     private static void characterRead() {
-        try (InputStream inputStream = new FileInputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test.txt")) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF8");
-            System.out.println(inputStreamReader.getEncoding());
+        try (InputStream inputStream = new FileInputStream("/home/maciuch/tmp/test.txt")) {
+            InputStreamReader reader = new InputStreamReader(inputStream, "UTF8");
+            System.out.println(reader.getEncoding());
             int c;
-            while ((c = inputStreamReader.read()) != -1) {
+            while ((c = reader.read()) != -1) {
                 System.out.print((char) c);
             }
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie ma takiego pliku");
-        }
-        catch (IOException e){
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie ma takiego pliku!!!!");
+        } catch (IOException e) {
             System.out.println("Błąd wejścia");
         }
     }
 
-    private static void basicReadTrywidthResources() {//w bloku () można umieszczać tylko obiekty implementuące interfejs Closable od Javy 7
-        try (InputStream inputStream = new FileInputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test.txt")) {
+    private static void basicReadTryWithResources() {
+        try (InputStream inputStream = new FileInputStream("/home/maciuch/tmp/test.txt")) {
             int b;
             while ((b = inputStream.read()) != -1) {
                 System.out.print((char) b);
             }
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie ma takiego pliku");
-        }
-        catch (IOException e){
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie ma takiego pliku!!!!");
+        } catch (IOException e) {
             System.out.println("Błąd wejścia");
         }
-
     }
 
 
-    public static void basicRead(){
+    private static void basicRead() {
         InputStream inputStream = null;
         try {
-            inputStream = new FileInputStream("C:\\Users\\bartek\\IdeaProjects\\Pliki_do_czytania\\test.txt");
+            inputStream = new FileInputStream("/home/maciuch/tmp/test.txt");
             int b;
-            while ((b = inputStream.read()) != -1){
+            while ((b = inputStream.read()) != -1) {
                 System.out.print((char) b);
             }
-        }
-        catch (FileNotFoundException e){
-            System.out.println("Nie ma takiego pliku");
-        }
-        catch (IOException e){
+        } catch (FileNotFoundException e) {
+            System.out.println("Nie ma takiego pliku!!!!");
+        } catch (IOException e) {
             System.out.println("Błąd wejścia");
-        }
-        finally {
+        } finally {
             if (inputStream != null)
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                System.out.println("Błąd zamykania pliku");;
-            }
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    System.out.println("Błąd zamykania pliku");
+                }
         }
     }
+
 }

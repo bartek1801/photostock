@@ -108,7 +108,7 @@ public class Money implements Comparable<Money> {
         return currency;
     }
 
-    public Money abs(){
+    public Money abs() {
         return new Money(Math.abs(cents), currency);
     }
 }
