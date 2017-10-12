@@ -28,7 +28,7 @@ public class FireEmployee {
 
         ResultSet resultSet = getEmployeesByName(connection, GET_EMPLOYEE, firstName, lastName);
         checkEmployee(resultSet);
-        
+
         resultSet.beforeFirst();
         while (resultSet.next()) {
             System.out.printf("%d %s %s %s %s %s",
@@ -49,7 +49,6 @@ public class FireEmployee {
         checkEmployee(rs);
 
         connection.setAutoCommit(false);
-
 //        updateTable(connection, "dept_emp", emp_number, UPDATE_TABLE);
 //        updateTable(connection, "salaries", emp_number, UPDATE_TABLE);
 //        updateTable(connection, "titles", emp_number, UPDATE_TABLE);
@@ -58,7 +57,6 @@ public class FireEmployee {
         updateSalaries(connection, emp_number);
         updateTitles(connection, emp_number);
         updateDeptManager(connection, emp_number);
-
         connection.commit();
 
     }
