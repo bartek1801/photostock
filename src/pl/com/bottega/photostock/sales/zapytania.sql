@@ -25,21 +25,29 @@ INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_de
 VALUES ('Henryk', 'Sienkiewicz', 'PL', '1846-05-05','1916-11-15');
 INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_death)
 VALUES ('Andrzej', 'Sapkowski', 'PL', '1948-06-21',null);
+INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_death)
+VALUES ('Adam', 'Asnyk', 'PL', '1948-06-21',null);
+
 
 INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_death)
-VALUES ('Adam', 'Asnyk', 'PL', '1948-06-21','1956-03-02');
-
+VALUES ('George', 'Byron', 'GB', '1948-06-21',null);
 INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_death)
-VALUES ('George', 'Martin', 'US', '1956-06-24',null);
+VALUES ('Honire', 'De Balsac', 'FR', '1948-06-21',null);
 INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_death)
-VALUES ('Honire', 'Balzac', 'FR', '1956-06-24',null);
-INSERT INTO authors (firstname, lastname, nationality, date_of_birth, date_of_death)
-VALUES ('Alexander', 'Dumas', 'FR', '1976-06-24',null);
+VALUES ('Alexander', 'Dumas', 'FR', '1948-06-21',null);
 
 SELECT * FROM authors WHERE firstname LIKE 'Adam';
 SELECT * FROM authors WHERE nationality LIKE 'PL';
 SELECT * FROM authors WHERE date_of_death IS NULL;
 SELECT * FROM authors WHERE date_of_death IS NOT NULL;
+
+SELECT nationality, firstname, min(id), max(id), count(*)
+FROM authors
+WHERE nationality != 'FR'
+GROUP BY nationality, firstname
+HAVING count(*) > 0
+ORDER BY count(*)
+;
 
 SELECT * FROM authors
 WHERE date_of_death IS NULL AND DATEDIFF(CURRENT_DATE, date_of_birth) > 50 * 365;
@@ -123,7 +131,7 @@ INSERT INTO books VALUES (NULL, 'Opowieści dziwnej treści.','30-231-32-34112',
 
 insert into books_authors values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4), (5, 3), (6, 3), (7, 2), (8, 4), (8, 5), (8, 1), (9, 2), (10, 4), (11, 4), (12, 2), (13, 1);
 
--- a) wszystkie książki z autorami i z gatunkiem literackim
+--a) wszystkie książki z autorami i z gatunkiem literackim
 
 SELECT books.title, CONCAT(authors.firstname, ' ', authors.lastname) as autor, genres.name
 FROM books
@@ -131,120 +139,110 @@ JOIN genres ON genres.id = books.genre_id
 JOIN books_authors ON books_authors.book_id = books.id
 JOIN authors ON books_authors.author_id = authors.id;
 
--- b) autorów i ich wsystkie książki, ale tylko tych, których książki są w bibliotece
+--b) autorów i ich wsystkie książki, ale tylko tych, których książki są w bibliotece
+
 SELECT CONCAT(a.firstname, ' ', a.lastname) AS 'author', b.title
 FROM authors a
 JOIN books_authors ba ON ba.author_id = a.id
 JOIN books b ON b.id = ba.book_id
 ORDER BY a.lastname;
 
- --   c) autorów i ich wsystkie książki, łącznie z tymi, których książek nie ma w bibliotece
+--c) autorów i ich wsystkie książki, łącznie z tymi, których książek nie ma w bibliotece
+
 SELECT CONCAT(a.firstname, ' ', a.lastname) AS 'author', b.title
 FROM authors a
 LEFT JOIN books_authors ba ON ba.author_id = a.id
 LEFT JOIN books b ON b.id = ba.book_id
 ORDER BY a.lastname;
 
- --   d) autorów, których co najmniej jedna książka znajduje się w bibliotece
-SELECT DISTINCT CONCAT(a.firstname, ' ', a.lastname) AS 'author with at least one book'
-FROM authors a
-JOIN books_authors ba ON a.id = ba.author_id
-ORDER BY a.lastname;
+--d) autorów, których co najmniej jedna książka znajduje się w bibliotece
 
- --   e) autorów, których książek nie ma w bibliotece
-SELECT CONCAT(a.firstname, ' ', a.lastname) AS 'authors without books'
+SELECT DISTINCT CONCAT(a.firstname, ' ', a.lastname) AS 'author'
 FROM authors a
-LEFT JOIN books_authors ba ON a.id = ba.author_id
-WHERE ba.author_id IS NULL
-ORDER BY a.lastname;
+JOIN books_authors ba ON ba.author_id = a.id;
 
- --   f) autorów, którzy napisali chociaż jeden kryminał (id = 10 w genres) (bez powtórzeń jeśli napisali więcej niż jeden)
-SELECT DISTINCT CONCAT(a.firstname, ' ', a.lastname) AS 'authors which write crime'
+--e) autorów, których książek nie ma w bibliotece
+
+SELECT DISTINCT CONCAT(a.firstname, ' ', a.lastname) AS 'author'
 FROM authors a
-JOIN books_authors ba ON a.id = ba.author_id
+LEFT JOIN books_authors ba ON ba.author_id = a.id
+WHERE books_authors.book_id IS NULL;
+
+--f) autorów, którzy napisali chociaż jeden kryminał (bez powtórzeń jeśli napisali więcej niż jeden)
+SELECT DISTINCT CONCAT(a.firstname, ' ', a.lastname) AS 'author'
+FROM authors a
+JOIN books_authors ba ON ba.author_id = a.id
 JOIN books b ON b.id = ba.book_id
 JOIN genres g ON g.id = b.genre_id
-WHERE b.genre_id = 12
--- WHERE g.name LIKE 'kuchnia%'
-ORDER BY a.lastname;
+WHERE g.name LIKE 'kuchnia%';
 
--- 12. Zaprojektuj schemat dodatkowych tabel, który będzie umożliwiał przechowywanie informacji o egzemplarzach książek
--- i ich wypożyczeniach przez klientów. Utwórz zaprojektowane tabele i zasil je danymi.
 DROP TABLE IF EXISTS specimens;
 
 CREATE TABLE specimens (
-    id INT AUTO_INCREMENT,
-    book_id INT NOT NULL,
-    code VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
+  id INT AUTO_INCREMENT,
+  book_id INT NOT NULL,
+  code VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (book_id) REFERENCES books(id)
 );
 
 DROP TABLE IF EXISTS lendings;
 
 CREATE TABLE lendings (
-    id INT AUTO_INCREMENT,
-    client_id INT NOT NULL,
-    specimen_id INT NOT NULL,
-    lending_date DATETIME DEFAULT NOW(),
-    return_date DATETIME DEFAULT NULL ,
-    PRIMARY KEY (id),
-    FOREIGN KEY (client_id) REFERENCES clients(id),
-    FOREIGN KEY (specimen_id) REFERENCES specimens(id)
+  id INT AUTO_INCREMENT,
+  client_id INT NOT NULL,
+  specimen_id INT NOT NULL,
+  lending_date DATETIME NOT NULL DEFAULT NOW(),
+  return_date DATETIME DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (client_id) REFERENCES clients(id),
+  FOREIGN KEY (specimen_id) REFERENCES specimens(id)
 );
 
--- 13. Napisz zapytania wyświetlające:
--- a) ilość wszystkich autorów
-SELECT COUNT(DISTINCT id)
-FROM authors;
-
--- b) ilość wszystkich autorów, których co najmniej jedna książka znajduje się w bibliotece
-SELECT COUNT(DISTINCT a.id) AS 'count of authors with at least one book'
+SELECT count(distinct a.id)
 FROM authors a
-JOIN books_authors ba ON a.id = ba.author_id;
+JOIN books_authors ba ON ba.author_id = a.id;
 
--- c) książki, których co najmniej jeden egzemplarz jest dostępny do wypożycznia
-SELECT DISTINCT b.title
+--c) książki, których co najmniej jeden egzemplarz jest dostępny do wypożycznia
+
+INSERT INTO specimens VALUES (null, 1, '11');
+INSERT INTO specimens VALUES (null, 1, '12');
+INSERT INTO specimens VALUES (null, 2, '21');
+INSERT INTO specimens VALUES (null, 3, '31');
+
+INSERT INTO lendings VALUES (null, 1, 4, now(), null);
+INSERT INTO lendings VALUES (null, 1, 1, now(), null);
+INSERT INTO lendings VALUES (null, 1, 3, now(), now());
+
+SELECT DISTINCT(b.title)
 FROM books b
 JOIN specimens s ON b.id = s.book_id
-LEFT JOIN lendings l ON s.id = l.specimen_id
-WHERE l.return_date IS NOT NULL OR l.specimen_id IS NULL;
+LEFT JOIN lendings l ON l.specimen_id = s.id
+WHERE l.id IS NULL OR ((SELECT count(*) FROM lendings ll WHERE ll.return_date IS NULL AND ll.specimen_id = s.id) = 0)
+;
 
-INSERT INTO specimens (book_id, code)
-VALUES (5, 124);
+SELECT genres.name, count(books.id)
+FROM genres
+LEFT JOIN books ON books.genre_id = genres.id
+GROUP BY genres.name
+ORDER BY name
+;
 
-INSERT INTO lendings (client_id, specimen_id)
-VALUES (2, 2);
+SELECT genres.name, count(books.id) AS books_count
+FROM genres
+LEFT JOIN books ON books.genre_id = genres.id
+GROUP BY genres.name
+HAVING books_count >= 1
+ORDER BY books_count DESC
+;
 
-INSERT INTO lendings (client_id, specimen_id, return_date)
-VALUES (2, 1, NOW());
-
-SELECT nationality, firstname, COUNT(*), MIN(date_of_death), MAX(date_of_birth), AVG(id)
-FROM authors
-WHERE nationality != 'FR'
-GROUP BY nationality, firstname
--- HAVING COUNT(*) > 2;
-ORDER BY COUNT(*)
-
-
--- d) książki, których wszystkie egzemplarze są wypożyczone
-
-
--- e) gatunki literackie i ilość książek w każdym gatunku
-SELECT g.name, COUNT(b.id) AS liczba_książek
-FROM genres g
-LEFT JOIN books b ON g.id = b.genre_id
-GROUP BY g.name;
-
--- f) gatunki litereckie, które mają co najmniej jedną książkę posortowane po ilości książek malejąco
-SELECT g.name, COUNT(b.id) AS liczba_książek
-FROM genres g
-LEFT JOIN books b ON g.id = b.genre_id
-GROUP BY g.name
-HAVING liczba_książek > 0
-ORDER BY liczba_książek DESC;
-
--- g) autorów, gatunki literackie oraz ilość książek danego autora z danego gatunku
+SELECT concat(firstname, ' ', lastname) AS author_name, genres.name, count(books_authors.author_id)
+FROM genres
+CROSS JOIN authors
+LEFT JOIN books_authors ON books_authors.author_id = authors.id
+LEFT JOIN books ON books.id = books_authors.book_id
+GROUP BY author_name, genres.name
+;
 
 SELECT concat(firstname, ' ', lastname) AS author_name, genres.name, count(books.id)
 FROM genres
@@ -256,53 +254,16 @@ GROUP BY author_name, genres.name
 ORDER BY count(books.id) DESC
 ;
 
--- --------------------------------------
-SELECT b.title, CONCAT(a.firstname, ' ', a.lastname) AS name_of_author
-FROM books b
-JOIN books_authors ba ON ba.book_id = b.id
-JOIN authors a ON a.id = ba.author_id;
+SELECT genres.name, (SELECT count(*) FROM books WHERE genres.id = books.genre_id) AS books_count
+FROM genres
+ORDER BY books_count DESC
+;
 
-SELECT  COUNT(b.title)
-FROM books b
-JOIN books_authors ba ON ba.book_id = b.id
-JOIN authors a ON a.id = ba.author_id;
+SELECT genres.name
+FROM genres
+WHERE (SELECT count(*) FROM books WHERE genres.id = books.genre_id) > 0
+;
 
--- h) autorów oraz ilość kryminałów przez nich napisanych bez autorów, którzy nie napisali żadnego kryminału
-SELECT CONCAT(a.firstname, ' ', a.lastname) AS author_name, g.name, COUNT(b.id) AS 'count of crime books'
-FROM genres g
-JOIN books b ON b.genre_id = g.id
-JOIN books_authors ba ON ba.book_id = b.id
-JOIN authors a ON a.id = ba.author_id
-WHERE g.id = 12
-GROUP BY author_name, g.name;
-
-
--- Zagnieżdżanie selectów - SUBquery Syntax
-
--- 14. Zaupdejtuj imię wybranego klienta.
 UPDATE lendings
-SET return_date = NOW()
+SET return_date = now()
 WHERE id = 2;
-
-
-
--- 15. Usuń wybranego klienta.
-
-
--- 16. Stwórz indeksy pozwalające na szybkie wyszukiwanie:
--- tworzy się aby szybciej działało wyszykiwanie
--- jest jeszcze UNIQE INDEX dla wartośći atrybutów które nie mogą się duplikować np PESEL, nr ISBN książki itp.
-CREATE UNIQUE INDEX clients_pesel_index ON clients(pesel);
-
--- a) klientów po nr pesel
-CREATE INDEX clients_pesel_index ON clients(pesel);
-
--- b) książek po tytule
-CREATE INDEX books_title ON books(title);
-
--- c) książek po isbn
-
--- d) egzemplarzy po kodzie kreskowym
-
-
--- TRANSAKCJE W SQL - pakuje się do nich kilka zapytań, np. updateów itp 

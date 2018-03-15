@@ -5,41 +5,34 @@ public class ThreadTest {
     private static int x = 0;
 
     public static void main(String[] args) {
-        Thread thread = new Thread(() ->{
-            for (int i = 0; i < 30; i++){
+        String synchronizator = "x";
+        Thread thread = new Thread(() -> {
+            for (int i = 0; i < 30; i++) {
                 //incX();
-                synchronized (ThreadTest.class){
-                    x += 1  ;
+                synchronized (synchronizator) {
+                    x += 1;
+                    try {
+                        synchronizator.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-
-
-                System.out.println("jestem w wątku " + x);
-//                try {
-//                    Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
+                System.out.println("Jestem w wątku " + x);
             }
         });
-
         thread.start();
 
-        for (int i = 0; i<30; i++){
-            incX();
-            synchronized (ThreadTest.class){
-                x += 1  ;
+        for (int i = 0; i < 30; i++) {
+            //incX();
+            synchronized (synchronizator) {
+                x += 1;
+                synchronizator.notifyAll();
             }
-
-            System.out.println("Jestem poza wątkiem " + x);
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
+            System.out.println("Jestem pozam wątkiem " + x);
         }
     }
 
-    private static synchronized void incX(){
+    private static synchronized void incX() {
         x += 1;
     }
 

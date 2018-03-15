@@ -1,26 +1,24 @@
 package pl.com.bottega.photostock.sales.misc;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.BatchUpdateException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
 public class ChatServer {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         new ChatServer().work();
     }
 
     private List<Client> clients = new Vector<>();
 
-    public void work() throws IOException {
+    public void work() throws Exception {
         ServerSocket serverSocket = new ServerSocket(6661);
         while (true) {
             Socket clientSocket = serverSocket.accept();
+            System.out.println("Client connected " + clientSocket.getInetAddress());
             Client client = new Client(this, clientSocket.getInputStream(), clientSocket.getOutputStream());
             clients.add(client);
             new Thread(client).start();
@@ -30,8 +28,8 @@ public class ChatServer {
     static class Client implements Runnable {
 
         private final ChatServer server;
+        private final PrintWriter printWriter;
         private BufferedReader bufferedReader;
-        private PrintWriter printWriter;
         private String name;
 
         public Client(ChatServer server, InputStream inputStream, OutputStream outputStream) {
@@ -40,27 +38,27 @@ public class ChatServer {
             this.printWriter = new PrintWriter(outputStream);
         }
 
-
         @Override
         public void run() {
             try {
                 name = bufferedReader.readLine();
-                if (name == null){
-                    server.clientsDisconected(this);
+                if (name == null) {
+                    server.clientDisconnected(this);
                     return;
                 }
+                System.out.println("Client name is " + name);
                 while (true) {
                     String msg = bufferedReader.readLine();
-                    if (msg == null){
-                        server.clientsDisconected(this);
+                    if(msg == null) {
+                        server.clientDisconnected(this);
                         return;
                     }
+                    System.out.println("Client " + name + " sent message " + msg);
                     server.newMessage(msg, this);
                 }
             } catch (IOException e) {
-                server.clientsDisconected(this);
+                server.clientDisconnected(this);
             }
-
         }
 
         public void sendMessage(String msg, Client author) {
@@ -73,7 +71,8 @@ public class ChatServer {
         }
     }
 
-    private void clientsDisconected(Client client) {
+    private void clientDisconnected(Client client) {
+        System.out.println("Client " + client.name + " disconnected");
         this.clients.remove(client);
     }
 
@@ -81,8 +80,8 @@ public class ChatServer {
         for (Client otherClient : clients) {
             if (author != otherClient) {
                 otherClient.sendMessage(msg, author);
-
             }
         }
     }
+
 }

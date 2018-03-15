@@ -1,19 +1,18 @@
 package pl.com.bottega.photostock.sales.misc;
 
-
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ProducentConsumerProblem {
 
     static class Producent implements Runnable {
 
-        private Warehause2 warehause;
+        private Warehouse2 warehouse;
 
-        public Producent(Warehause2 warehause) {
-            this.warehause = warehause;
+        public Producent(Warehouse2 warehouse) {
+            this.warehouse = warehouse;
         }
 
         @Override
@@ -24,14 +23,14 @@ public class ProducentConsumerProblem {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                String product = String.valueOf((int)(Math.random() * 100));
+                String product = String.valueOf((int) (Math.random() * 100));
                 System.out.println("Wyprodukowałem: " + product);
-                warehause.put(product);
+                warehouse.put(product);
             }
         }
     }
 
-    static class Warehause {
+    static class Warehouse {
 
         private Queue<String> products = new LinkedList<>();
 
@@ -52,36 +51,36 @@ public class ProducentConsumerProblem {
         }
     }
 
+    static class Warehouse2 {
 
-    static class Warehause2 {
+        private BlockingQueue<String> products = new LinkedBlockingQueue<>();
 
-        private BlockingDeque<String> products = new LinkedBlockingDeque<>();
-
-        public  void put(String product) {
-          products.add(product);
+        public void put(String product) {
+            products.add(product);
         }
 
         public String take() {
-            try {
-                return products.take();
-            } catch (InterruptedException e) {
-                return take();
+            while (true) {
+                try {
+                    return products.take();
+                } catch (InterruptedException e) {
+                }
             }
         }
     }
 
     static class Consumer implements Runnable {
 
-        private Warehause2 warehause;
+        private Warehouse2 warehouse;
 
-        public Consumer(Warehause2 warehause) {
-            this.warehause = warehause;
+        public Consumer(Warehouse2 warehouse) {
+            this.warehouse = warehouse;
         }
 
         @Override
         public void run() {
             while (true) {
-                String product = warehause.take();
+                String product = warehouse.take();
                 try {
                     Thread.sleep(1000 + (long) (Math.random() * 2000));
                 } catch (InterruptedException e) {
@@ -94,18 +93,14 @@ public class ProducentConsumerProblem {
     }
 
     private static final int PRODUCENT_COUNT = 10;
-    private static final int CONSUMERS_COUNT = 5;
+    private static final int CONSUMER_COUNT = 5;
 
     public static void main(String[] args) {
-        Warehause2 warehause = new Warehause2();
-        for (int i = 0; i < PRODUCENT_COUNT; i++) {
-            new Thread(new Producent(warehause)).start();
-        }
-        for (int i = 0; i < CONSUMERS_COUNT; i++) {
-            new Thread(new Consumer(warehause)).start();
-        }
-
+        Warehouse2 warehouse = new Warehouse2();
+        for (int i = 0; i < PRODUCENT_COUNT; i++)
+            new Thread(new Producent(warehouse)).start();
+        for (int i = 0; i < CONSUMER_COUNT; i++)
+            new Thread(new Consumer(warehouse)).start();
     }
-
 
 }
